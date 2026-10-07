@@ -13,6 +13,8 @@
 
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/login.css">
+
 </head>
 
 <body>
@@ -32,6 +34,27 @@
     </header>
 
     <main>
+
+        <div class="container" id="form-box">
+            <h1>Login</h1>
+            <form id="form-cadastro" method="post">
+                <div class="campo">
+                    <label for="emailcad">E-mail</label>
+                    <input type="email" id="emailcad" name="emailcad" autocomplete="email" required>
+                </div>
+
+                <div class="campo">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" autocomplete="new-password" required>
+                </div>
+
+                <button type="submit" class="botao botao-vermelho" id="botao-cadastro">Entrar</button>
+
+                <p id="form-cadastro__link">
+                    Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+                </p>
+            </form>
+        </div>
     </main>
 
     <footer class="rodape">

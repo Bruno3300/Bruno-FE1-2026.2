@@ -1,12 +1,4 @@
-/* =========================================================
-   base.css
-   Reset, variáveis, tipografia e regras globais.
-   Nada aqui é      específico de uma página ou componente.
-   ========================================================= */
-
-/* ---------- 1. Variáveis (troque o tema mudando só aqui) ---------- */
 :root {
-    /* Cores */
     --cor-primaria: #d01f2a;
     --cor-primaria-escura: #a81820;
     --cor-tinta: #000;
@@ -16,23 +8,12 @@
     --cor-texto: #000;
     --cor-texto-suave: #555;
 
-    /* Fontes */
     --fonte-titulo: 'Chakra Petch', 'Segoe UI', sans-serif;
     --fonte-texto: 'Segoe UI', system-ui, -apple-system, sans-serif;
 
-    /* Espaçamento (escala simples) */
-    --espaco-1: 0.5rem;
-    --espaco-2: 1rem;
-    --espaco-3: 1.5rem;
-    --espaco-4: 2.5rem;
-    --espaco-5: 4rem;
 
-    /* Estilo "quadrinho": contorno grosso + sombra dura */
     --borda: 2px solid var(--cor-tinta);
     --sombra-dura: 4px 4px 0 var(--cor-tinta);
-
-    /* Layout */
-    --largura-max: 1200px;
 }
 
 /* ---------- 2. Reset ---------- */
@@ -40,34 +21,28 @@
 *::before,
 *::after {
     box-sizing: border-box;
-    /* padding e borda entram na largura */
 }
 
 * {
     margin: 0;
 }
 
+
 html {
     scroll-behavior: smooth;
-    /* rolagem suave nos links #âncora */
 }
 
 body {
-    min-height: 100vh;
     font-family: var(--fonte-texto);
     font-size: 1rem;
-    line-height: 1.6;
     color: var(--cor-texto);
+
     background-color: var(--cor-fundo);
-    /* fundo pontilhado, estilo retícula de mangá */
-    background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(0, 0, 0, 0.12) 2px, transparent 2px);
     background-size: 16px 16px;
-    -webkit-font-smoothing: antialiased;
 }
 
-img,
-picture,
-svg {
+img {
     display: block;
     max-width: 100%;
     height: auto;
@@ -78,7 +53,6 @@ button,
 textarea,
 select {
     font: inherit;
-    /* formulários herdam a fonte da página */
     color: inherit;
 }
 
@@ -100,59 +74,21 @@ a {
     color: inherit;
 }
 
-/* ---------- 3. Tipografia ---------- */
 h1,
 h2,
 h3,
 h4 {
     font-family: var(--fonte-titulo);
-    font-weight: 700;
-    line-height: 1.1;
-}
 
-h1 {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-style: italic;
-}
-
-h2 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-style: italic;
-}
-
-h3 {
-    font-size: 1.25rem;
 }
 
 p {
     max-width: 65ch;
-    /* linhas de texto confortáveis de ler */
 }
 
-/* ---------- 4. Layout global ---------- */
 .container {
     width: 100%;
-    max-width: var(--largura-max);
+    max-width: 1500px;
     margin-inline: auto;
-    /* centraliza */
-    padding-inline: var(--espaco-3);
-}
-
-/* ---------- 5. Acessibilidade ---------- */
-:focus-visible {
-    outline: 3px solid var(--cor-primaria);
-    outline-offset: 3px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation: none !important;
-        transition: none !important;
-    }
+    padding-inline: 1.5rem;
 }
