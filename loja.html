@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangaBox</title>
+    <link rel="icon" href="./img/icon.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/componentes.css">
+</head>
+
+<body>
+    <header class="menu">
+        <div class="container menu__interno">
+            <a href="index.html" class="menu__logo">
+                <img src="img/logo-horizontal.png" alt="MangaBox">
+            </a>
+
+            <nav class="menu__nav">
+                <a href="index.html" class="menu__link" aria-current="page">Início</a>
+                <a href="loja.html" class="menu__link">Catálogo</a>
+                <a href="cadastro.html" class="menu__link">Cadastro/Login</a>
+                <a href="perfil.html" class="menu__link">Perfil</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+    </main>
+
+    <footer class="rodape">
+        <!--Contato-->
+        <section class="container contato">
+            <h2 class="contato__titulo">Contato</h2>
+
+            <address>
+                <dl class="contato__info">
+                    <dt>Endereço</dt>
+                    <dd>Rua Exemplo, 123<br>Centro - Florianópolis, SC<br>CEP 88010-000</dd>
+                    <dt>Telefone</dt>
+                    <dd><a href="tel:+5548999999999">(48)99999-9999</a></dd>
+                    <dt>E-mail</dt>
+                    <dd><a href="mailto:contato@mangabox.com.br">contato@mangabox.com.br</a></dd>
+                    <dt>Horário de Atendimento</dt>
+                    <dd>Segunda a sábado, 10h às 20h<br>Domingo, 11h às 17h</dd>
+                </dl>
+            </address>
+
+            <form action="" class="form-contato">
+                <h3>Envie uma mensagem</h3>
+
+                <div class="campo">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="campo">
+                    <label for="mensagem">Mensagem</label>
+                    <textarea id="mensagem" name="mensagem" required></textarea>
+                </div>
+
+                <button type="submit" class="botao botao-vermelho">Enviar mensagem</button>
+            </form>
+        </section>
+    </footer>
+</body>
+
+</html>

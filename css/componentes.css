@@ -1,0 +1,223 @@
+/* menu superior */
+
+.menu {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--cor-superficie);
+    border-bottom: var(--borda);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu__logo img {
+    height: 70px;
+    width: auto;
+    padding: 14px 0px;
+}
+
+.menu__interno {
+    display: flex;
+}
+
+.menu__nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: auto;
+}
+
+.menu__link {
+    font-weight: 500;
+    text-decoration: none;
+    display: block;
+    padding: 0 12px;
+}
+
+.menu__link:hover {
+    transition: 0.5s;
+    color: var(--cor-primaria-escura);
+}
+
+/* botões */
+.botao {
+    font-family: var(--fonte-titulo);
+    text-decoration: none;
+    text-align: center;
+
+    display: inline-block;
+    padding: 0.75rem;
+    margin: 1rem;
+    color: var(--cor-tinta);
+    background-color: var(--cor-superficie);
+    border: 3px solid var(--cor-tinta);
+    box-shadow: var(--sombra-dura);
+    border-radius: 8px;
+}
+
+.botao:hover {
+    background-color: var(--cor-superficie-escuro);
+    transition: 0.2s;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--cor-tinta);
+}
+
+.botao:active {
+    transition: 0.2s;
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--cor-tinta);
+}
+
+.botao-vermelho {
+    background-color: var(--cor-primaria);
+    color: var(--cor-superficie);
+}
+
+.botao-vermelho:hover {
+    background-color: var(--cor-primaria-escura);
+}
+
+.botao__comprar {
+    width: 90%;
+
+}
+
+/* seções */
+.secao {
+    padding-block: 4rem;
+}
+
+.secao__titulo {
+    margin-bottom: 2.5rem;
+}
+
+/* produtos */
+.grade-produtos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4em;
+
+}
+
+.card-produto {
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--cor-superficie);
+    border: var(--borda);
+
+    border-radius: 5px;
+
+    overflow: hidden;
+}
+
+.card-produto button {
+    align-self: center;
+    margin-bottom: 1rem;
+}
+
+.card-produto__imagem {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    align-self: center;
+
+    border-bottom: 2px solid var(--cor-tinta);
+}
+
+.card-produto__titulo {
+    padding: 0.5rem 0.5rem;
+    min-height: 2lh;
+
+    text-wrap: balance;
+}
+
+.card-produto__descricao {
+    padding: 0rem 0.5rem;
+    font-size: 0.9rem;
+    color: var(--cor-texto-suave);
+}
+
+.card-produto__preco {
+    padding: 0.5rem 0.5rem;
+    margin-top: auto;
+    font-family: var(--fonte-titulo);
+    font-size: 1.2rem;
+    color: var(--cor-primaria-escura);
+}
+
+.card-produto--catalogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+
+
+/* ---------- Rodapé ---------- */
+.rodape {
+    background-color: var(--cor-tinta);
+    padding-block: 1.9rem;
+}
+
+.contato {
+    color: var(--cor-superficie);
+    display: grid;
+    grid-template-columns: 0.4fr 1fr;
+    gap: 1.5rem 4rem;
+    align-items: start;
+}
+
+.contato__titulo {
+    grid-column: 1 / -1;
+}
+
+.contato__info dt {
+    font-family: var(--fonte-titulo);
+    color: var(--cor-primaria);
+}
+
+.contato__info dd {
+    margin: 0 0 1rem;
+}
+
+.contato__info a {
+    text-decoration: none;
+    border-bottom: 2px solid var(--cor-primaria);
+}
+
+/* formulario */
+.form-contato {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+
+    background-color: var(--cor-superficie);
+    border-radius: 8px;
+
+    color: var(--cor-tinta);
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.campo input,
+.campo textarea {
+    padding: 0.65rem 0.75rem;
+    background-color: var(--cor-fundo);
+    border: 2px solid var(--cor-tinta);
+    border-radius: 8px;
+}
+
+.campo textarea {
+    min-height: 120px;
+    resize: vertical;
+}
