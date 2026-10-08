@@ -21,8 +21,9 @@
 }
 
 #botao-cadastro {
-    align-self: center;
+    display: block;
     width: 80%;
+    margin-inline: auto;
     margin-bottom: 1rem;
 }
 
