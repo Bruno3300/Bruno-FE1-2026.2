@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MangaBox</title>
+    <title>MangaBox | Catálogo</title>
     <link rel="icon" href="./img/icon.png" type="image/png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/loja.css">
 </head>
 
 <body>
@@ -32,6 +33,229 @@
     </header>
 
     <main>
+        <!--catalogo-->
+        <section class="secao" id="catalogo">
+            <div class="container">
+                <h1 class="secao__titulo">Catálogo</h1>
+
+                <form method="get" id="filtros">
+                    <div class="campo" id="campo-busca">
+                        <label for="busca">Buscar</label>
+                        <input type="search" name="busca" id="busca" placeholder="O que você está procurando?">
+                    </div>
+
+                    <div class="campo">
+                        <label for="categoria">Categoria</label>
+                        <select name="categoria" id="categoria">
+                            <option value="">Todas</option>
+                            <option value="acao">Ação</option>
+                            <option value="aventura">Aventura</option>
+                            <option value="comedia">Comédia</option>
+                            <option value="fantasia">Fantasia</option>
+                            <option value="ficcao">Ficção Científica</option>
+                            <option value="esporte">Esporte</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="preco-min">Preço mínimo (R$)</label>
+                        <input type="number" id="preco-min" name="preco-min" min="0" step="0.01" placeholder="0,00">
+                    </div>
+
+                    <div class="campo">
+                        <label for="preco-max">Preço máximo (R$)</label>
+                        <input type="number" id="preco-max" name="preco-max" min="0" step="0.01" placeholder="100,00">
+                    </div>
+
+                    <div class="campo">
+                        <label for="ordem">Ordenar por</label>
+                        <select id="ordem" name="ordem">
+                            <option value="titulo">Título (A–Z)</option>
+                            <option value="menor-preco">Menor preço</option>
+                            <option value="maior-preco">Maior preço</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="botao botao-vermelho" id="botao-filtrar">Filtrar</button>
+                </form>
+            </div>
+
+            <!--produtos-->
+            <div class="grade-produtos container">
+                <article class="card-produto">
+                    <img src="img/produtos/Azumanga1.jpg" alt="Azumanga Daioh Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Azumanga Daioh Volume 01</h3>
+                    <p class="card-produto__categoria">Comédia</p>
+                    <p class="card-produto__preco">R$ 16,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/berserk01.jpg" alt="Berserk Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Berserk Volume 1</h3>
+                    <p class="card-produto__categoria">Fantasia</p>
+                    <p class="card-produto__preco">R$ 44,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/bl1.jpg" alt="Blue Lock Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Blue Lock Volume 1</h3>
+                    <p class="card-produto__categoria">Esporte</p>
+                    <p class="card-produto__preco">R$ 44,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/Blame1.jpg" alt="Blame! Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Blame! Volume 1</h3>
+                    <p class="card-produto__categoria">Ficção científica</p>
+                    <p class="card-produto__preco">R$ 44,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/bleach1.png" alt="Bleach Remix Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Bleach Remix Volume 1</h3>
+                    <p class="card-produto__categoria">Ação</p>
+                    <p class="card-produto__preco">R$ 69,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/claymore1.jpg" alt="Claymore Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Claymore Volume 1</h3>
+                    <p class="card-produto__categoria">Fantasia</p>
+                    <p class="card-produto__preco">R$ 44,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/delicious01.png" alt="Delicious in the Dungeon Volume 1"
+                        class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Delicious in the Dungeon Volume 1</h3>
+                    <p class="card-produto__categoria">Aventura</p>
+                    <p class="card-produto__preco">R$ 44,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/girls01.jpg" alt="As Viajantes do Fim Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">As Viajantes do Fim Volume 1</h3>
+                    <p class="card-produto__categoria">Ficção científica</p>
+                    <p class="card-produto__preco">R$ 64,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/jojo1.jpg" alt="Jojolion Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Jojo's Bizarre Adventures Parte 8: Jojolion Volume 1</h3>
+                    <p class="card-produto__categoria">Aventura</p>
+                    <p class="card-produto__preco">R$ 64,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/nagabe1.png" alt="A Menina do Outro Lado Volume 1"
+                        class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">A Menina do Outro Lado Volume 1</h3>
+                    <p class="card-produto__categoria">Fantasia</p>
+                    <p class="card-produto__preco">R$ 69,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="card-produto">
+                    <img src="img/produtos/vagabond1.jpg" alt="Vagabond Volume 1" class="card-produto__imagem">
+                    <h3 class="card-produto__titulo">Vagabond Volume 1</h3>
+                    <p class="card-produto__categoria">Ação</p>
+                    <p class="card-produto__preco">R$ 44,90</p>
+                    <button type="button" class="botao botao-vermelho botao__comprar">Adicionar ao carrinho</button>
+                </article>
+            </div>
+        </section>
+
+        <!--carrinho-->
+        <section id="carrinho">
+            <h2>Carrinho</h2>
+            <div id="tabela-container">
+
+                <table id="tabela-carrinho">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Produto</th>
+                            <th scope="col">Qtd.</th>
+                            <th scope="col">Preço Unitário</th>
+                            <th scope="col">Subtotal</th>
+                            <th scope="col">Remover</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="carrinho__produto">
+                                <img src="img/produtos/Azumanga1.jpg" alt="" class="carrinho__miniatura">
+                                <span>Azumanga Daioh Volume 01</span>
+                            </td>
+
+                            <td>
+                                <input type="number" id="qtd1" name="qtd1" value="1" min="1" max="99">
+                            </td>
+
+                            <td>R$ 16,90</td>
+
+                            <td>R$ 16,90</td>
+
+                            <td><button type="button" class="botao botao-vermelho">Remover</button></td>
+                        </tr>
+
+                        <tr>
+                            <td class="carrinho__produto">
+                                <img src="img/produtos/berserk01.jpg" alt="" class="carrinho__miniatura">
+                                <span>Berserk Volume 1</span>
+                            </td>
+
+                            <td>
+                                <input type="number" id="qtd2" name="qtd2" value="2" min="1" max="99">
+                            </td>
+
+                            <td>R$ 44,90</td>
+
+                            <td>R$ 89,80</td>
+
+                            <td><button type="button" class="botao botao-vermelho">Remover</button></td>
+                        </tr>
+
+                        <tr>
+                            <td class="carrinho__produto">
+                                <img src="img/produtos/girls01.jpg" alt="" class="carrinho__miniatura">
+                                <span>As Viajantes do Fim Volume 1</span>
+                            </td>
+
+                            <td>
+                                <input type="number" id="qtd3" name="qtd3" value="2" min="1" max="99">
+                            </td>
+
+                            <td>R$ 64,90</td>
+
+                            <td>R$ 129,80</td>
+
+                            <td><button type="button" class="botao botao-vermelho">Remover</button></td>
+                        </tr>
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th scope="row" colspan="3">Total</th>
+                            <td colspan="2" class="carrinho-total">R$ 236,50</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <button type="button" class="botao botao-vermelho" id="botao-finalizar">Finalizar compra</button>
+            </div>
+        </section>
+
     </main>
 
     <footer class="rodape">

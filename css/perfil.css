@@ -69,3 +69,10 @@ td {
     border: 1px solid #ddd;
     padding: 8px;
 }
+
+input:read-only {
+    background-color: var(--cor-superficie-escuro2);
+    color: var(--cor-texto-suave);
+    border-color: var(--cor-superficie-escuro);
+    cursor: not-allowed;
+}

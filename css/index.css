@@ -1,6 +1,6 @@
 /* destaque */
 .destaque {
-    padding: 4rem;
+    padding: 4rem 1.5rem;
     border-bottom: var(--borda);
 }
 
@@ -10,6 +10,7 @@
     align-items: center;
     gap: 5rem;
 }
+
 
 .destaque__texto {
     display: flex;
