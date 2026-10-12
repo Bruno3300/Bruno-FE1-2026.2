@@ -6,18 +6,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangaBox | Relatórios</title>
     <link rel="icon" href="./img/icon.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/relatorios.css">
+    <link rel="stylesheet" href="css/responsivo.css">
+
+    <link rel="stylesheet" href="css/relatorios-impressao.css" media="print">
 </head>
 
 <body>
-    <header>
-        <h1>Relatórios</h1>
+    <header id="admin-cabecalho">
+        <div class="container admin-cabecalho-interno">
+            <div>
+                <p id="admin-cabecalho-marca">MangaBox</p>
+                <h1 id="admin-cabecalho-titulo">Área administrativa - Relatórios</h1>
+            </div>
+
+            <div>
+                <p>Emitido em: <time datetime="2026-10-12T11:54">12/10/2026 - 11:54</time></p>
+            </div>
+        </div>
     </header>
 
-    <main>
+    <main class="container">
 
+        <section id="clientes">
+            <h2>Clientes cadastrados</h2>
+
+            <form method="get">
+                <p>Buscar Clientes</p>
+
+                <div class="campo">
+                    <label for="termo-cliente">Termo de busca</label>
+                    <input type="text" id="termo-cliente" name="termo-cliente" placeholder="Digite sua busca">
+                </div>
+
+                <div class="campo">
+                    <label for="criterio-cliente">Buscar por</label>
+                    <select id="criterio-cliente" name="criterio-cliente">
+                        <option value="nome">Nome</option>
+                        <option value="id">ID</option>
+                        <option value="email">E-mail</option>
+                        <option value="cpf">CPF</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="botao botao-vermelho">Buscar</button>
+            </form>
+
+            <div class="admin-tabela">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">CPF</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th scope="row">C001</th>
+                            <td>Bruno Santana</td>
+                            <td>brunosf2007@gmail.com</td>
+                            <td>000.000.000-00</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">C002</th>
+                            <td>Adriano Henriques</td>
+                            <td>Adriano@gmail.com</td>
+                            <td>111.111.111-11</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">C003</th>
+                            <td>Amanda Lemos</td>
+                            <td>amandalemos@gmail.com</td>
+                            <td>222.222.222-22</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">C004</th>
+                            <td>Thiago Nunes</td>
+                            <td>thiagonunes@hotmail.com</td>
+                            <td>333.333.333-33</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">C005</th>
+                            <td>Letícia Prado</td>
+                            <td>leticiaprado@gmail.com</td>
+                            <td>444.444.444-44</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </section>
+
+        <section id="compras">
+            <h2>Compras realizadas</h2>
+
+            <form method="get" class="admin-busca nao-imprimir" id="busca-compras">
+                <legend>Buscar compras</legend>
+
+                <div class="campo">
+                    <label for="termo-compra">Termo de busca</label>
+                    <input type="text" id="termo-compra" name="termo-compra" placeholder="Digite sua busca">
+                </div>
+
+                <div class="campo">
+                    <label for="criterio-compra">Buscar por</label>
+                    <select id="criterio-compra" name="criterio-compra">
+                        <option value="id">ID da compra</option>
+                        <option value="cliente">Cliente</option>
+                        <option value="data">Data</option>
+                        <option value="valor">Valor</option>
+                        <option value="produto">Produto</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="botao botao-vermelho">Buscar</button>
+            </form>
+
+            <div class="admin-tabela">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Cliente</th>
+                            <th scope="col">Produtos</th>
+                            <th scope="col">Qtd.</th>
+                            <th scope="col">Valor total</th>
+                            <th scope="col">Data</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th scope="row">CP001</th>
+                            <td>C001 - Bruno Santana</td>
+                            <td>
+                                <ul>
+                                    <li>Vagabond Volume 1</li>
+                                </ul>
+                            </td>
+                            <td>1</td>
+                            <td>R$ 44,90</td>
+                            <td><time datetime="2026-09-15">15/09/2026</time></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">CP002</th>
+                            <td>C001 - Bruno Santana</td>
+                            <td>
+                                <ul>
+                                    <li>Berserk Volume 1</li>
+                                    <li>Blue Lock Volume 1</li>
+                                    <li>Azumanga Daioh Volume 01</li>
+                                </ul>
+                            </td>
+                            <td>3</td>
+                            <td>R$ 106,70</td>
+                            <td><time datetime="2026-09-28">28/09/2026</time></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">CP003</th>
+                            <td>C001 - Bruno Santana</td>
+                            <td>
+                                <ul>
+                                    <li>Berserk Volume 1 (2x)</li>
+                                </ul>
+                            </td>
+                            <td>2</td>
+                            <td>R$ 89,80</td>
+                            <td><time datetime="2026-10-05">05/10/2026</time></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">CP004</th>
+                            <td>C002 - Adriano Henriques</td>
+                            <td>
+                                <ul>
+                                    <li>Delicious in the Dungeon Volume 1</li>
+                                    <li>Claymore Volume 1</li>
+                                </ul>
+                            </td>
+                            <td>2</td>
+                            <td>R$ 89,80</td>
+                            <td><time datetime="2026-10-02">02/10/2026</time></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">CP005</th>
+                            <td>C003 - Amanda Lemos</td>
+                            <td>
+                                <ul>
+                                    <li>Bleach Remix Volume 1</li>
+                                    <li>Blame! Volume 1</li>
+                                </ul>
+                            </td>
+                            <td>2</td>
+                            <td>R$ 114,80</td>
+                            <td><time datetime="2026-10-06">06/10/2026</time></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">CP006</th>
+                            <td>C004 - Thiago Nunes</td>
+                            <td>
+                                <ul>
+                                    <li>As Viajantes do Fim Volume 1</li>
+                                    <li>Jojolion Volume 1</li>
+                                </ul>
+                            </td>
+                            <td>2</td>
+                            <td>R$ 129,80</td>
+                            <td><time datetime="2026-10-08">08/10/2026</time></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">CP007</th>
+                            <td>C005 - Letícia Prado</td>
+                            <td>
+                                <ul>
+                                    <li>Vagabond Volume 1</li>
+                                    <li>Azumanga Daioh Volume 01 (2x)</li>
+                                </ul>
+                            </td>
+                            <td>3</td>
+                            <td>R$ 78,70</td>
+                            <td><time datetime="2026-10-09">09/10/2026</time></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">CP008</th>
+                            <td>C006 - Letícia Prado</td>
+                            <td>
+                                <ul>
+                                    <li>A Menina do Outro Lado Volume 1</li>
+                                </ul>
+                            </td>
+                            <td>1</td>
+                            <td>R$ 69,90</td>
+                            <td><time datetime="2026-10-10">10/10/2026</time></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
     </main>
 
-    <footer></footer>
-</body>
+    <footer class="admin-rodape">
+        <div class="container admin-rodape__interno">
+            <p>MangaBox - Área administrativa</p>
+            <p>Emitido em: <time datetime="2026-10-12T11:54">12/10/2026 - 11:54</time></p>
+        </div>
+    </footer>
 
-</html>
+</body>

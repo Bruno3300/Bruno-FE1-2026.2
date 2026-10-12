@@ -1,0 +1,32 @@
+@media print {
+    body {
+        background: none;
+        color: var(--cor-tinta);
+    }
+
+    form {
+        display: none;
+    }
+
+    header,
+    .admin-rodape {
+        background: none;
+        color: var(--cor-tinta);
+    }
+
+    #admin-cabecalho-marca {
+        color: var(--cor-tinta);
+    }
+
+    #clientes,
+    #compras {
+        box-shadow: none;
+        border: none;
+        margin: 1rem 0;
+    }
+
+    th,
+    td {
+        border: 1px solid var(--cor-tinta);
+    }
+}

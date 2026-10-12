@@ -1,0 +1,181 @@
+/*válidos em todos os dispositivos*/
+
+.menu__toggle {
+    display: none;
+}
+
+.menu__hamburguer {
+    display: none;
+}
+
+img,
+input,
+select,
+textarea {
+    max-width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+
+    /*evitar rolagem horizontal*/
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    p,
+    td,
+    th,
+    li,
+    a {
+        overflow-wrap: anywhere;
+    }
+
+    .container {
+        padding-inline: 1rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    /*menu hamburguer*/
+    .menu__interno {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu__logo img {
+        height: 56px;
+    }
+
+    .menu__hamburguer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 46px;
+    }
+
+    .menu__hamburguer img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+    }
+
+    .menu__nav {
+        display: none;
+        order: 3;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        margin-left: 0;
+        gap: 5px;
+        padding-bottom: 10px;
+    }
+
+    .menu__toggle:checked~.menu__nav {
+        display: flex;
+    }
+
+    /*layouts*/
+    .destaque {
+        padding: 2rem 1rem;
+    }
+
+    .destaque__interno {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .destaque__logo {
+        max-width: 100%;
+    }
+
+    #sobre__bloco1,
+    #sobre__bloco2,
+    .contato,
+    #filtros {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .grade-produtos {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .card-produto {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /*caixas*/
+    #form-box,
+    #carrinho,
+    #pedidos {
+        width: calc(100% - 2rem);
+        padding: 1rem;
+    }
+
+    #clientes,
+    #compras,
+    #filtros {
+        padding: 1rem;
+    }
+
+    #form-box,
+    #carrinho,
+    #pedidos,
+    #clientes,
+    #compras,
+    #filtros {
+        box-shadow: 6px 6px 0 var(--cor-primaria);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    #botao-cadastro,
+    #botao-perfil,
+    #botao-filtrar {
+        width: 100%;
+        justify-self: stretch;
+    }
+
+    /*tabelas*/
+    table {
+        font-size: 0.75rem;
+    }
+
+    th,
+    td {
+        padding: 4px;
+    }
+
+    .carrinho__miniatura {
+        display: none;
+    }
+
+    #tabela-carrinho input[type="number"] {
+        width: 45px;
+    }
+
+    #tabela-carrinho .botao {
+        margin: 0;
+        padding: 0.3rem;
+        font-size: 0.7rem;
+    }
+
+    /* ----- relatórios: cabeçalho e rodapé ----- */
+    .admin-cabecalho-interno,
+    .admin-rodape__interno {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
