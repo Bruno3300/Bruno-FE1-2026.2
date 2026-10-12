@@ -88,7 +88,7 @@ td ul {
     padding: 1.5rem 0;
 }
 
-.admin-rodape__interno {
+.admin-rodape-interno {
     display: flex;
     justify-content: space-between;
 }

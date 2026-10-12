@@ -1,10 +1,10 @@
 /*válidos em todos os dispositivos*/
 
-.menu__toggle {
+.menu-toggle {
     display: none;
 }
 
-.menu__hamburguer {
+.menu-hamburguer {
     display: none;
 }
 
@@ -44,17 +44,17 @@ textarea {
     }
 
     /*menu hamburguer*/
-    .menu__interno {
+    .menu-interno {
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
     }
 
-    .menu__logo img {
+    .menu-logo img {
         height: 56px;
     }
 
-    .menu__hamburguer {
+    .menu-hamburguer {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -62,13 +62,13 @@ textarea {
         height: 46px;
     }
 
-    .menu__hamburguer img {
+    .menu-hamburguer img {
         width: 24px;
         height: 24px;
         object-fit: contain;
     }
 
-    .menu__nav {
+    .menu-nav {
         display: none;
         order: 3;
         width: 100%;
@@ -79,7 +79,7 @@ textarea {
         padding-bottom: 10px;
     }
 
-    .menu__toggle:checked~.menu__nav {
+    .menu-toggle:checked~.menu-nav {
         display: flex;
     }
 
@@ -88,17 +88,17 @@ textarea {
         padding: 2rem 1rem;
     }
 
-    .destaque__interno {
+    .destaque-interno {
         flex-direction: column;
         gap: 2rem;
     }
 
-    .destaque__logo {
+    .destaque-logo {
         max-width: 100%;
     }
 
-    #sobre__bloco1,
-    #sobre__bloco2,
+    #sobre-bloco1,
+    #sobre-bloco2,
     .contato,
     #filtros {
         grid-template-columns: 1fr;
@@ -157,7 +157,7 @@ textarea {
         padding: 4px;
     }
 
-    .carrinho__miniatura {
+    .carrinho-miniatura {
         display: none;
     }
 
@@ -173,7 +173,7 @@ textarea {
 
     /* ----- relatórios: cabeçalho e rodapé ----- */
     .admin-cabecalho-interno,
-    .admin-rodape__interno {
+    .admin-rodape-interno {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;

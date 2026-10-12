@@ -45,7 +45,7 @@
     border-radius: 4px;
 }
 
-.card-produto__categoria {
+.card-produto-categoria {
     padding: 0.5rem 0.5rem 0;
     font-size: 0.9rem;
     color: var(--cor-texto-suave);
@@ -97,7 +97,7 @@ td {
     padding: 8px;
 }
 
-.carrinho__miniatura {
+.carrinho-miniatura {
     width: 48px;
     aspect-ratio: 2 / 3;
     object-fit: cover;
@@ -106,7 +106,7 @@ td {
     flex-shrink: 0;
 }
 
-.carrinho__produto {
+.carrinho-produto {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -129,7 +129,7 @@ td {
     display: none;
 }
 
-.confirmacao__caixa {
+.confirmacao-caixa {
     width: 100%;
     max-width: 480px;
     margin: auto;
@@ -147,7 +147,7 @@ td {
     box-shadow: 10px 10px 0 var(--cor-primaria);
 }
 
-.confirmacao__icone {
+.confirmacao-icone {
     display: grid;
     place-items: center;
     width: 64px;
@@ -162,7 +162,7 @@ td {
     box-shadow: var(--sombra-dura);
 }
 
-.confirmacao__numero {
+.confirmacao-numero {
     font-family: var(--fonte-titulo);
     font-size: 2rem;
 }
