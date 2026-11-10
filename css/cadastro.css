@@ -32,3 +32,9 @@
     margin: 0;
     text-align: center;
 }
+
+.erro {
+    color: red;
+    font-size: 13px;
+    display: block;
+}
