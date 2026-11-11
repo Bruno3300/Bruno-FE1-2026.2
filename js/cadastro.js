@@ -20,16 +20,26 @@ formCadastro.addEventListener('submit', function (event) {
 
     event.preventDefault();
 
-    const nomeValido = validarNome();
-
-
-    if (!nomeValido) {
-        campoNome.focus();
-        return;
-    }
+    validarCpf();
 
 });
 
+// Máscaras
+campoCpf.addEventListener('input', function () {
+    let cpf = campoCpf.value;
+
+    cpf = cpf.replace(/\D/g, '');
+
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+    campoCpf.value = cpf;
+
+});
+
+
+// Validações
 function validarNome() {
     const nome = campoNome.value.trim();
     const partesNome = nome.split(/\s+/);
@@ -84,3 +94,42 @@ function validarTelefone() {
 
     return true;
 }
+
+function validarCpf() {
+    const cpf = campoCpf.value.replace(/\D/g, '');
+
+    if (cpf.length != 11) {
+        erroCpf.textContent = 'Digite um CPF válido.';
+
+        return false
+    }
+
+    // calculo do primeiro digito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += Number(cpf[i]) * (10 - i);
+    }
+    let resto = soma % 11;
+    let digitoVerificadorUm = resto < 2 ? 0 : 11 - resto;
+
+    // calculo do segundo digito verificador
+    soma = 0;
+
+    for (let o = 0; i < 11; i++) {
+        soma += Number(cpf[i]) * (11 - i);
+    }
+
+    resto = soma % 11;
+    let digitoVerificadorDois = resto < 2 ? 0 : 11 - resto;
+
+    // verifica se os digitos verificadores estão corretos
+    if (Number(cpf[10]) !== digitoVerificadorUm || Number(cpf[11]) !== digitoVerificadorDois) {
+        erroCpf.textContent = 'CPF inválido.';
+        return false;
+    }
+
+    erroCpf.textContent = '';
+
+    return true;
+}
+

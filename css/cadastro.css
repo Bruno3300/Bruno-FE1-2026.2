@@ -34,7 +34,7 @@
 }
 
 .erro {
-    color: red;
+    color: var(--cor-primaria);
     font-size: 13px;
     display: block;
 }
