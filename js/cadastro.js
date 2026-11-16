@@ -1,4 +1,3 @@
-
 const formCadastro = document.getElementById('form-cadastro');
 
 const campoNome = document.getElementById('nomecad');
@@ -18,70 +17,65 @@ const naoLetra = document.getElementById('nao-letra');
 const naoNumero = document.getElementById('nao-numero');
 const erroConfirma = document.getElementById('erro-confirma');
 
+let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+
 
 formCadastro.addEventListener('submit', function (event) {
 
     event.preventDefault();
 
-    validarCpf();
+    // Informações do formulário
+    const nome = campoNome.value;
+    const cpf = campoCpf.value;
+    const email = campoEmail.value;
+    const telefone = campoTelefone.value;
+    const senha = campoSenha.value;
+    const confirmacaoSenha = campoConfirma.value;
 
-});
+    const nomeValido = validarNome(nome);
+    const cpfValido = validarCpf(cpf);
+    const emailValido = validarEmail(email);
+    const telefoneValido = validarTelefone(telefone);
+    const senhaValida = validarSenha(senha);
+    const confirmacaoValida = validarConfirmacaoSenha(senha, confirmacaoSenha);
 
-// Máscaras
-campoCpf.addEventListener('input', function () {
-    let cpf = campoCpf.value;
 
-    cpf = cpf.replace(/\D/g, '');
 
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    //    if (nomeValido && cpfValido && emailValido && telefoneValido && senhaValida && confirmacaoValida) {
+    //        const cliente = {
+    //            id: gerarID(),
+    //            nome: campoNome.value,
+    //            cpf: campoCpf.value.replace(/\D/g, ''),
+    //            email: campoEmail.value,
+    //            telefone: campoTelefone.value
+    //        };
+    //    }
 
-    campoCpf.value = cpf;
-
-});
-
-campoSenha.addEventListener('input', function () {
-    let senha = campoSenha.value;
-
-    const temLetra = /[a-zA-Z]/.test(senha);
-    const temNumero = /[0-9]/.test(senha);
-
-    if (senha != '') {
-
-        // Tamanho
-        if (senha.length < 8) {
-            naoMinimo.textContent = 'A senha não contém o tamanho mínimo.'
-        } else {
-            naoMinimo.textContent = ''
-        }
-
-        // Letras
-        if (!temLetra) {
-            naoLetra.textContent = 'A senha não contém letras.'
-        } else {
-            naoLetra.textContent = ''
-        }
-
-        // Números
-        if (!temNumero) {
-            naoNumero.textContent = 'A senha não contém números.'
-        } else {
-            naoNumero.textContent = ''
-        }
+    if (!nomeValido) {
+        campoNome.focus();
+    } else if (!cpfValido) {
+        campoCpf.focus();
+    } else if (!emailValido) {
+        campoEmail.focus();
+    } else if (!telefoneValido) {
+        campoTelefone.focus();
+    } else if (!senhaValida) {
+        campoSenha.focus();
+    } else if (!confirmacaoValida) {
+        campoConfirma.focus();
     }
 
-
+    const id = gerarID();
+    const salt = gerarSalt();
+    const hash = gerarHash(senha, salt);
 
 
 
 });
 
-// Validações
-
 // Nome
-function validarNome() {
-    const nome = campoNome.value.trim();
+function validarNome(nome) {
+    nome = nome.trim();
     const partesNome = nome.split(/\s+/);
 
     if (nome.length < 3 || partesNome.length < 2) {
@@ -94,16 +88,20 @@ function validarNome() {
 }
 
 // Email
-function validarEmail() {
-
-    const email = campoEmail.value.trim();
+//TODO melhorar validação
+function validarEmail(email) {
+    email = email.trim();
 
     const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!formatoEmail.test(email)) {
         erroEmail.textContent = 'Digite um e-mail válido.';
         return false;
+    }
 
+    if (clientes.some(cliente => cliente.email === email)) {
+        erroEmail.textContent = 'Este e-mail já está cadastrado.';
+        return false;
     }
 
     erroEmail.textContent = '';
@@ -111,9 +109,7 @@ function validarEmail() {
 }
 
 // Telefone
-function validarTelefone() {
-
-    const telefone = campoTelefone.value;
+function validarTelefone(telefone) {
 
     const formatoTelefone = /^\d{10,11}$/;
 
@@ -128,8 +124,7 @@ function validarTelefone() {
 
 
 // Senha
-function validarSenha() {
-    const senha = campoSenha.value;
+function validarSenha(senha) {
 
     const temLetra = /[a-zA-Z]/.test(senha);
     const temNumero = /[0-9]/.test(senha);
@@ -143,11 +138,70 @@ function validarSenha() {
     return true
 }
 
-// CPF
-function validarCpf() {
-    const cpf = campoCpf.value.replace(/\D/g, '');
+function validarConfirmacaoSenha(senha, confirmacaoSenha) {
 
-    if (cpf.length != 11) {
+    if (confirmacaoSenha === '') {
+        erroConfirma.textContent = 'Confirme sua senha.';
+        return false;
+    }
+
+    if (confirmacaoSenha !== senha) {
+        erroConfirma.textContent = 'As senhas não coincidem.';
+        return false;
+    }
+
+    erroConfirma.textContent = '';
+    return true;
+}
+
+campoSenha.addEventListener('input', function () {
+    let senha = campoSenha.value;
+
+    const temLetra = /[a-zA-Z]/.test(senha);
+    const temNumero = /[0-9]/.test(senha);
+
+    if (senha != '') {
+
+        // Tamanho
+        if (senha.length < 8) {
+            naoMinimo.textContent = 'Tamanho mínimo da senha é 8 caracteres.'
+        } else {
+            naoMinimo.textContent = ''
+        }
+
+        // Letras
+        if (!temLetra) {
+            naoLetra.textContent = 'A senha deve conter letras.'
+        } else {
+            naoLetra.textContent = ''
+        }
+
+        // Números
+        if (!temNumero) {
+            naoNumero.textContent = 'A senha deve conter números.'
+        } else {
+            naoNumero.textContent = ''
+        }
+    }
+
+});
+
+// Hash Senha
+function gerarSalt() {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    return Array.from(salt).map(byte => byte.toString(16).padStart(2, '0').join(''));
+}
+
+function gerarHash(senha, salt) {
+
+
+}
+
+// CPF
+function validarCpf(cpf) {
+    cpf = cpf.replace(/\D/g, '');
+
+    if (cpf.length != 11 || /^(\d)\1{10}$/.test(cpf)) {
         erroCpf.textContent = 'Digite um CPF válido.';
         return false
     }
@@ -176,7 +230,35 @@ function validarCpf() {
         return false;
     }
 
+    if (clientes.some(cliente => cliente.cpf === cpf)) {
+        erroCpf.textContent = 'Este CPF já está cadastrado.';
+        return false;
+    }
+
     erroCpf.textContent = '';
     return true;
 }
 
+campoCpf.addEventListener('input', function () {
+    let cpf = campoCpf.value;
+
+    cpf = cpf.replace(/\D/g, '');
+
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+    campoCpf.value = cpf;
+
+});
+
+// id
+function gerarID() {
+    let contador = Number(localStorage.getItem('contadorClientes')) || 0;
+
+    contador++;
+
+    localStorage.setItem('contadorClientes', contador);
+
+    return 'C' + String(contador).padStart(3, '0');
+}
