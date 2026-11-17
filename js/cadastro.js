@@ -20,7 +20,7 @@ const erroConfirma = document.getElementById('erro-confirma');
 let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
 
 
-formCadastro.addEventListener('submit', function (event) {
+formCadastro.addEventListener('submit', async function (event) {
 
     event.preventDefault();
 
@@ -51,26 +51,34 @@ formCadastro.addEventListener('submit', function (event) {
     //        };
     //    }
 
-    if (!nomeValido) {
-        campoNome.focus();
-    } else if (!cpfValido) {
-        campoCpf.focus();
-    } else if (!emailValido) {
-        campoEmail.focus();
-    } else if (!telefoneValido) {
-        campoTelefone.focus();
-    } else if (!senhaValida) {
-        campoSenha.focus();
-    } else if (!confirmacaoValida) {
-        campoConfirma.focus();
+    if (!(nomeValido && cpfValido && emailValido && telefoneValido && senhaValida && confirmacaoValida)) {
+        if (!nomeValido) campoNome.focus();
+        else if (!cpfValido) campoCpf.focus();
+        else if (!emailValido) campoEmail.focus();
+        else if (!telefoneValido) campoTelefone.focus();
+        else if (!senhaValida) campoSenha.focus();
+        else campoConfirma.focus();
+        return;
     }
 
     const id = gerarID();
     const salt = gerarSalt();
-    const hash = gerarHash(senha, salt);
+    const hash = await gerarHash(senha, salt);
 
+    const cliente = {
+        id: gerarID(),
+        nome: nome,
+        cpf: cpf,
+        email: email,
+        telefone: telefone,
+        senhaHash: hash,
+        salt: salt
+    };
 
+    clientes.push(cliente);
+    localStorage.setItem('clientes', JSON.stringify(clientes));
 
+    formCadastro.reset();
 });
 
 // Nome
@@ -90,7 +98,7 @@ function validarNome(nome) {
 // Email
 //TODO melhorar validação
 function validarEmail(email) {
-    email = email.trim();
+    email = email.trim().toLowerCase();
 
     const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -110,6 +118,7 @@ function validarEmail(email) {
 
 // Telefone
 function validarTelefone(telefone) {
+    telefone = telefone.replace(/\D/g, '');
 
     const formatoTelefone = /^\d{10,11}$/;
 
@@ -121,6 +130,17 @@ function validarTelefone(telefone) {
     erroTelefone.textContent = '';
     return true;
 }
+
+campoTelefone.addEventListener('input', function () {
+    let telefone = campoTelefone.value.replace(/\D/g, '');
+
+    telefone = telefone.slice(0, 11);
+
+    telefone = telefone.replace(/^(\d{2})(\d)/, '($1) $2');
+    telefone = telefone.replace(/(\d{4,5})(\d{4})$/, '$1-$2');
+
+    campoTelefone.value = telefone;
+});
 
 
 // Senha
@@ -157,31 +177,29 @@ function validarConfirmacaoSenha(senha, confirmacaoSenha) {
 campoSenha.addEventListener('input', function () {
     let senha = campoSenha.value;
 
-    const temLetra = /[a-zA-Z]/.test(senha);
-    const temNumero = /[0-9]/.test(senha);
+    if (senha === '') {
+        naoMinimo.textContent = '';
+        naoLetra.textContent = '';
+        naoNumero.textContent = '';
+        return;
+    }
 
-    if (senha != '') {
+    if (senha.length < 8) {
+        naoMinimo.textContent = 'Tamanho mínimo da senha é 8 caracteres.';
+    } else {
+        naoMinimo.textContent = '';
+    }
 
-        // Tamanho
-        if (senha.length < 8) {
-            naoMinimo.textContent = 'Tamanho mínimo da senha é 8 caracteres.'
-        } else {
-            naoMinimo.textContent = ''
-        }
+    if (!/[a-zA-Z]/.test(senha)) {
+        naoLetra.textContent = 'A senha deve conter letras.';
+    } else {
+        naoLetra.textContent = '';
+    }
 
-        // Letras
-        if (!temLetra) {
-            naoLetra.textContent = 'A senha deve conter letras.'
-        } else {
-            naoLetra.textContent = ''
-        }
-
-        // Números
-        if (!temNumero) {
-            naoNumero.textContent = 'A senha deve conter números.'
-        } else {
-            naoNumero.textContent = ''
-        }
+    if (!/[0-9]/.test(senha)) {
+        naoNumero.textContent = 'A senha deve conter números.';
+    } else {
+        naoNumero.textContent = '';
     }
 
 });
@@ -189,11 +207,19 @@ campoSenha.addEventListener('input', function () {
 // Hash Senha
 function gerarSalt() {
     const salt = crypto.getRandomValues(new Uint8Array(16));
-    return Array.from(salt).map(byte => byte.toString(16).padStart(2, '0').join(''));
+    return Array.from(salt).map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-function gerarHash(senha, salt) {
+async function gerarHash(senha, salt) {
+    const dados = new TextEncoder().encode(senha + salt);
 
+    const resultado = await crypto.subtle.digest('SHA-256', dados);
+
+    const hash = Array.from(new Uint8Array(resultado))
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');
+
+    return hash;
 
 }
 
