@@ -66,7 +66,7 @@ formCadastro.addEventListener('submit', async function (event) {
     const hash = await gerarHash(senha, salt);
 
     const cliente = {
-        id: gerarID(),
+        id: id,
         nome: nome,
         cpf: cpf,
         email: email,
@@ -256,7 +256,8 @@ function validarCpf(cpf) {
         return false;
     }
 
-    if (clientes.some(cliente => cliente.cpf === cpf)) {
+    // Verifica se o CPF já está sendo utilizado
+    if (clientes.some(cliente => cliente.cpf.replace(/\D/g, '') === cpf)) {
         erroCpf.textContent = 'Este CPF já está cadastrado.';
         return false;
     }
