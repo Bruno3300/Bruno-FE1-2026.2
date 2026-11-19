@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/componentes.css">
     <link rel="stylesheet" href="css/cadastro.css">
     <link rel="stylesheet" href="css/responsivo.css">
+    <script type="module" src="js/sessao.js"></script>
     <script type="module" src="js/cadastro.js"></script>
 </head>
 
@@ -31,10 +32,11 @@
             </label>
 
             <nav class="menu-nav">
-                <a href="index.html" class="menu-link" aria-current="page">Início</a>
+                <a href="index.html" class="menu-link">Início</a>
                 <a href="loja.html" class="menu-link">Catálogo</a>
-                <a href="cadastro.html" class="menu-link">Cadastro/Login</a>
-                <a href="perfil.html" class="menu-link">Perfil</a>
+                <a href="cadastro.html" class="menu-link" id="apenas-nao-logado">Cadastro/Login</a>
+                <a href="perfil.html" class="menu-link" id="apenas-logado">Perfil</a>
+                <a href="relatorios.html" class="menu-link" id="apenas-admin">Relatórios</a>
             </nav>
         </div>
     </header>

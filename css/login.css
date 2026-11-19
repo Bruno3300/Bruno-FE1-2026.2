@@ -14,13 +14,13 @@
     gap: 2rem;
 }
 
-#form-cadastro {
+#form-login {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-#botao-cadastro {
+#botao-login {
     display: block;
     width: 80%;
     margin-inline: auto;

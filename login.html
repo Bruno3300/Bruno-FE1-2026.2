@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="css/componentes.css">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/responsivo.css">
+
+    <script type="module" src="js/sessao.js"></script>
+    <script type="module" src="js/login.js"></script>
 </head>
 
 <body>
@@ -32,8 +35,9 @@
             <nav class="menu-nav">
                 <a href="index.html" class="menu-link" aria-current="page">Início</a>
                 <a href="loja.html" class="menu-link">Catálogo</a>
-                <a href="cadastro.html" class="menu-link">Cadastro/Login</a>
-                <a href="perfil.html" class="menu-link">Perfil</a>
+                <a href="cadastro.html" class="menu-link" id="apenas-nao-logado">Cadastro/Login</a>
+                <a href="perfil.html" class="menu-link" id="apenas-logado">Perfil</a>
+                <a href="relatorios.html" class="menu-link" id="apenas-admin">Relatórios</a>
             </nav>
         </div>
     </header>
@@ -42,7 +46,7 @@
 
         <div class="container" id="form-box">
             <h1>Login</h1>
-            <form id="form-cadastro" method="post">
+            <form id="form-login" method="post">
                 <div class="campo">
                     <label for="emaillogin">E-mail</label>
                     <input type="email" id="emaillogin" name="emaillogin" placeholder="exemplo@email.com"
@@ -55,7 +59,9 @@
                         autocomplete="current-password" required>
                 </div>
 
-                <button type="submit" class="botao botao-vermelho" id="botao-cadastro">Entrar</button>
+                <span class="erro" id="erro-login"></span>
+
+                <button type="submit" class="botao botao-vermelho" id="botao-login">Entrar</button>
 
                 <p id="form-cadastro-link">
                     Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>

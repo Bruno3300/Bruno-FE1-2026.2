@@ -24,11 +24,13 @@ formCadastro.addEventListener('submit', async function (event) {
 
     event.preventDefault();
 
+    clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+
     // Informações do formulário
-    const nome = campoNome.value;
-    const cpf = campoCpf.value;
-    const email = campoEmail.value;
-    const telefone = campoTelefone.value;
+    const nome = campoNome.value.trim();
+    const cpf = campoCpf.value.replace(/\D/g, '');
+    const email = campoEmail.value.trim().toLowerCase();
+    const telefone = campoTelefone.value.replace(/\D/g, '');
     const senha = campoSenha.value;
     const confirmacaoSenha = campoConfirma.value;
 
@@ -38,18 +40,6 @@ formCadastro.addEventListener('submit', async function (event) {
     const telefoneValido = validarTelefone(telefone);
     const senhaValida = validarSenha(senha);
     const confirmacaoValida = validarConfirmacaoSenha(senha, confirmacaoSenha);
-
-
-
-    //    if (nomeValido && cpfValido && emailValido && telefoneValido && senhaValida && confirmacaoValida) {
-    //        const cliente = {
-    //            id: gerarID(),
-    //            nome: campoNome.value,
-    //            cpf: campoCpf.value.replace(/\D/g, ''),
-    //            email: campoEmail.value,
-    //            telefone: campoTelefone.value
-    //        };
-    //    }
 
     if (!(nomeValido && cpfValido && emailValido && telefoneValido && senhaValida && confirmacaoValida)) {
         if (!nomeValido) campoNome.focus();
@@ -71,6 +61,7 @@ formCadastro.addEventListener('submit', async function (event) {
         cpf: cpf,
         email: email,
         telefone: telefone,
+        perfil: 'cliente',
         senhaHash: hash,
         salt: salt
     };
@@ -257,7 +248,7 @@ function validarCpf(cpf) {
     }
 
     // Verifica se o CPF já está sendo utilizado
-    if (clientes.some(cliente => cliente.cpf.replace(/\D/g, '') === cpf)) {
+    if (clientes.some(cliente => cliente.cpf === cpf)) {
         erroCpf.textContent = 'Este CPF já está cadastrado.';
         return false;
     }
@@ -267,16 +258,13 @@ function validarCpf(cpf) {
 }
 
 campoCpf.addEventListener('input', function () {
-    let cpf = campoCpf.value;
-
-    cpf = cpf.replace(/\D/g, '');
+    let cpf = campoCpf.value.replace(/\D/g, '').slice(0, 11);
 
     cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
     cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
     cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 
     campoCpf.value = cpf;
-
 });
 
 // id

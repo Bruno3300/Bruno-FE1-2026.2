@@ -164,6 +164,13 @@
     text-align: center;
 }
 
+/* erros */
+.erro {
+    color: var(--cor-primaria);
+    font-size: 13px;
+    display: block;
+}
+
 
 
 
