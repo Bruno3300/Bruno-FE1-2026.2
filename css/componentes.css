@@ -1,4 +1,7 @@
 /* menu superior */
+[hidden] {
+    display: none !important;
+}
 
 .menu {
     position: sticky;

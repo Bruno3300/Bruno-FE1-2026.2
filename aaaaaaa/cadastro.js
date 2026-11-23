@@ -1,3 +1,11 @@
+import {
+    lerDados,
+    salvarDados,
+    removerDados,
+    carregarClientes,
+    salvarClientes
+} from './storage.js';
+
 const formCadastro = document.getElementById('form-cadastro');
 
 const campoNome = document.getElementById('nomecad');
@@ -17,14 +25,14 @@ const naoLetra = document.getElementById('nao-letra');
 const naoNumero = document.getElementById('nao-numero');
 const erroConfirma = document.getElementById('erro-confirma');
 
-let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+let clientes = carregarClientes();
 
 
 formCadastro.addEventListener('submit', async function (event) {
 
     event.preventDefault();
 
-    clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+    clientes = carregarClientes();
 
     // Informações do formulário
     const nome = campoNome.value.trim();
@@ -66,8 +74,7 @@ formCadastro.addEventListener('submit', async function (event) {
         salt: salt
     };
 
-    clientes.push(cliente);
-    localStorage.setItem('clientes', JSON.stringify(clientes));
+    salvarClientes(cliente);
 
     formCadastro.reset();
 });
@@ -273,7 +280,7 @@ function gerarID() {
 
     contador++;
 
-    localStorage.setItem('contadorClientes', contador);
+    salvarDados('contadorClientes', contador)
 
     return 'C' + String(contador).padStart(3, '0');
 }

@@ -27,6 +27,18 @@
     margin-bottom: 1rem;
 }
 
+.botoes-perfil {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 82%;
+    margin: 1rem auto;
+}
+
+.botoes-perfil button {
+    flex: 1;
+}
+
 #pedidos {
     background-color: var(--cor-superficie);
     border: var(--borda);

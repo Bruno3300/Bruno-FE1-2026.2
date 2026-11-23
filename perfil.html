@@ -16,10 +16,11 @@
     <link rel="stylesheet" href="css/perfil.css">
     <link rel="stylesheet" href="css/responsivo.css">
 
+    <script type="module" src="./js/perfil.js"></script>
     <script type="module" src="js/sessao.js"></script>
 </head>
 
-<body>
+<body data-permissao="cliente">
     <header class="menu">
         <div class="container menu-interno">
             <a href="index.html" class="menu-logo">
@@ -32,56 +33,81 @@
             </label>
 
             <nav class="menu-nav">
-                <a href="index.html" class="menu-link" aria-current="page">Início</a>
+                <a href="index.html" class="menu-link">Início</a>
                 <a href="loja.html" class="menu-link">Catálogo</a>
-                <a href="cadastro.html" class="menu-link" id="apenas-nao-logado">Cadastro/Login</a>
-                <a href="perfil.html" class="menu-link" id="apenas-logado">Perfil</a>
-                <a href="relatorios.html" class="menu-link" id="apenas-admin">Relatórios</a>
+                <a href="cadastro.html" class="menu-link" id="nav-cadastro">Cadastro</a>
+                <a href="login.html" class="menu-link" id="nav-login">Login</a>
+                <a href="perfil.html" class="menu-link" id="nav-perfil" aria-current="page">Perfil</a>
+                <a href="relatorios.html" class="menu-link" id="nav-relatorios">Relatórios</a>
             </nav>
         </div>
     </header>
 
     <main>
+
         <div class="container" id="form-box">
             <h1>Meu Perfil</h1>
-            <form id="form-perfil" method="post">
+
+            <form id="form-perfil">
+
                 <div class="campo">
                     <label for="id-cliente">ID do Cliente</label>
-                    <input type="text" id="id-cliente" name="id-cliente" value="C001" readonly>
+                    <input type="text" id="id-cliente" name="id-cliente" readonly>
                 </div>
 
                 <div class="campo">
                     <label for="nomecad">Nome Completo</label>
-                    <input type="text" id="nomecad" name="nomecad" required autocomplete="name" value="Bruno Santana">
+                    <input type="text" id="nomecad" name="nomecad" required>
+                    <span class="erro" id="erro-nome"></span>
                 </div>
 
                 <div class="campo">
                     <label for="cpf">CPF</label>
-                    <input type="text" id="cpf" name="cpf" required pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
-                        title="Entre com o formato 000.000.000-00 ou apenas números" autocomplete="off"
-                        placeholder="000.000.000-00" value="000.000.000-00">
+                    <input type="text" id="cpf" name="cpf" readonly>
                 </div>
 
                 <div class="campo">
                     <label for="emailcad">E-mail</label>
-                    <input type="email" id="emailcad" name="emailcad" required autocomplete="email"
-                        placeholder="exemplo@email.com" value="brunosf2007@gmail.com">
+                    <input type="email" id="emailcad" name="emailcad" required>
+                    <span class="erro" id="erro-email"></span>
                 </div>
 
                 <div class="campo">
-                    <label for="senha">Nova Senha (Mínimo de 8 caracteres)</label>
-                    <input type="password" id="senha" name="senha" required minlength="8"
-                        placeholder="Digite sua nova senha" autocomplete="new-password">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" name="telefone" required placeholder="(00) 00000-0000">
+                    <span class="erro" id="erro-telefone"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="senha">Nova Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Deixe vazio para manter a senha atual">
+                    <span class="erro" id="erro-senha"></span>
                 </div>
 
                 <div class="campo">
                     <label for="senha-confirma">Confirmar Nova Senha</label>
-                    <input type="password" id="senha-confirma" name="senha-confirma" required
-                        placeholder="Digite sua nova senha novamente" autocomplete="new-password">
+                    <input type="password" id="senha-confirma" name="senha-confirma"
+                        placeholder="Digite novamente a nova senha">
+                    <span class="erro" id="erro-confirma"></span>
                 </div>
 
-                <button type="submit" class="botao botao-vermelho" id="botao-perfil">Salvar Alterações</button>
+                <button type="submit" class="botao botao-vermelho" id="botao-perfil">
+                    Salvar Alterações
+                </button>
+
             </form>
+
+            <div class="botoes-perfil">
+                <button type="button" class="botao botao-vermelho" id="botao-sair">
+                    Sair da Conta
+                </button>
+
+                <button type="button" class="botao botao-vermelho" id="botao-remover-conta">
+                    Remover Conta
+                </button>
+            </div>
+
+            <span class="erro" id="mensagem-perfil"></span>
         </div>
 
         <div id="pedidos">
