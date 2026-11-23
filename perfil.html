@@ -107,6 +107,27 @@
                 </button>
             </div>
 
+            <dialog id="dialog-remover">
+                <div class="conteudo-dialog">
+                    <h2>Remover conta</h2>
+
+                    <p>
+                        Tem certeza de que deseja remover sua conta?
+                        Essa ação não poderá ser desfeita.
+                    </p>
+
+                    <div class="botoes-dialog">
+                        <button type="button" id="cancelar-remocao">
+                            Cancelar
+                        </button>
+
+                        <button type="button" id="confirmar-remocao">
+                            Remover conta
+                        </button>
+                    </div>
+                </div>
+            </dialog>
+
             <span class="erro" id="mensagem-perfil"></span>
         </div>
 
@@ -195,6 +216,8 @@
             </form>
         </section>
     </footer>
+
+    <div id="toast" class="toast"></div>
 </body>
 
 </html>

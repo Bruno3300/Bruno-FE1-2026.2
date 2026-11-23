@@ -17,6 +17,15 @@
 
     --borda: 2px solid var(--cor-tinta);
     --sombra-dura: 4px 4px 0 var(--cor-tinta);
+
+    --cor-sucesso: #d1e7dd;
+    --cor-sucesso-texto: #0f5132;
+
+    --cor-erro: #f8d7da;
+    --cor-erro-texto: #842029;
+
+    --cor-azul-claro: #dbeafe;
+    --cor-texto-azul: #1e40af;
 }
 
 /* ---------- 2. Reset ---------- */

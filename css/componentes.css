@@ -240,3 +240,109 @@
     min-height: 120px;
     resize: vertical;
 }
+
+/* toast */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, -20px);
+    padding: 15px 20px;
+    border: var(--borda);
+    box-shadow: var(--sombra-dura);
+    border-radius: 5px;
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto);
+    font-family: var(--fonte-texto);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.toast.mostrar {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+.toast.sucesso {
+    background-color: var(--cor-sucesso);
+    color: var(--cor-sucesso-texto);
+}
+
+.toast.erro {
+    background-color: var(--cor-erro);
+    color: var(--cor-erro-texto);
+}
+
+.toast.info {
+    background-color: var(--cor-azul-claro);
+    color: var(--cor-texto-azul);
+}
+
+/* elemento dialog */
+
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+
+    border: var(--borda);
+    box-shadow: var(--sombra-dura);
+    border-radius: 8px;
+    padding: 0;
+    width: 90%;
+    max-width: 400px;
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto);
+    font-family: var(--fonte-texto);
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.conteudo-dialog {
+    padding: 25px;
+}
+
+.conteudo-dialog h2 {
+    margin-top: 0;
+    font-family: var(--fonte-titulo);
+}
+
+.botoes-dialog {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.botoes-dialog button {
+    padding: 10px 15px;
+    border: var(--borda);
+    border-radius: 5px;
+    font-family: var(--fonte-texto);
+    cursor: pointer;
+}
+
+#confirmar-remocao {
+    background-color: var(--cor-primaria);
+    color: var(--cor-superficie);
+}
+
+#confirmar-remocao:hover {
+    background-color: var(--cor-primaria-escura);
+}
+
+#cancelar-remocao {
+    background-color: var(--cor-superficie-escuro2);
+    color: var(--cor-texto);
+}
+
+#cancelar-remocao:hover {
+    background-color: var(--cor-superficie-escuro3);
+}

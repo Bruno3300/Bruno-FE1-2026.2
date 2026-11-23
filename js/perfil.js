@@ -1,3 +1,4 @@
+
 // Funções importadas
 import {
     carregarClientes,
@@ -22,6 +23,11 @@ import {
     exigirLogin
 } from './sessao.js';
 
+import {
+    mostrarToast,
+    abrirModal,
+    fecharModal
+} from './ui.js';
 
 // Recuperar cliente logado
 const cliente = exigirLogin();
@@ -46,13 +52,11 @@ if (cliente) {
     const erroSenha = document.getElementById('erro-senha');
     const erroConfirma = document.getElementById('erro-confirma');
 
-    const mensagemPerfil = document.getElementById('mensagem-perfil');
-
-    // Botão de remover conta
+    // Botões
     const botaoRemover = document.getElementById('botao-remover-conta');
-
-    // Botão de sair da conta
     const botaoSair = document.getElementById('botao-sair');
+    const botaoCancelar = document.getElementById('cancelar-remocao');
+    const botaoConfirmar = document.getElementById('confirmar-remocao');
 
 
     // Preencher campos com os dados do cliente
@@ -138,6 +142,18 @@ if (cliente) {
             clienteAtualizado.senhaHash = hash;
         }
 
+        // Verificar se houve alguma alteração
+        const houveAlteracao =
+            clienteAtualizado.nome !== cliente.nome ||
+            clienteAtualizado.email !== cliente.email ||
+            clienteAtualizado.telefone !== cliente.telefone ||
+            clienteAtualizado.senhaHash !== cliente.senhaHash;
+
+        if (!houveAlteracao) {
+            mostrarToast('Nenhuma alteração foi realizada.', 'info');
+            return;
+        }
+
         // Salvar alterações
         const atualizado = atualizarCliente(clienteAtualizado);
 
@@ -147,22 +163,25 @@ if (cliente) {
             campoSenha.value = '';
             campoConfirma.value = '';
 
-            mensagemPerfil.textContent = 'Dados atualizados com sucesso.';
+            mostrarToast('Alterações salvas com sucesso!', 'sucesso');
         }
     });
 
 
-    // Remover conta
+    // Abrir diálogo de remoção
     botaoRemover.addEventListener('click', function () {
+        abrirModal('dialog-remover');
+    });
 
-        const confirmacao = confirm(
-            'Tem certeza de que deseja remover sua conta? Essa ação não poderá ser desfeita.'
-        );
 
-        if (!confirmacao) {
-            return;
-        }
+    // Cancelar remoção
+    botaoCancelar.addEventListener('click', function () {
+        fecharModal('dialog-remover');
+    });
 
+
+    // Confirmar remoção
+    botaoConfirmar.addEventListener('click', function () {
         const removido = removerCliente(cliente.id);
 
         if (removido) {
@@ -171,6 +190,7 @@ if (cliente) {
             window.location.href = 'index.html';
         }
     });
+
 
     // Sair da conta
     botaoSair.addEventListener('click', function () {

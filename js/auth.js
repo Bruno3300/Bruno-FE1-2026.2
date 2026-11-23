@@ -1,4 +1,4 @@
-// Imports
+
 import {
     carregarClientes,
     lerDados,
@@ -10,45 +10,147 @@ import {
     gerarHash
 } from './utils.js';
 
+import {
+    mostrarToast
+} from './ui.js';
 
-// Captação do formulário e campos
+
+// Capturar formulário e campos
 const formLogin = document.getElementById('form-login');
 
 // Campos
 const campoEmail = document.getElementById('emaillogin');
 const campoSenha = document.getElementById('senha');
 
-// Mensagens de erro
+// Mensagens de Erro
 const erroLogin = document.getElementById('erro-login');
 const botaoLogin = document.getElementById('botao-login');
 
 
+// Recuperar mensagem salva
+const mensagem = lerDados('mensagemLogin');
+
+if (mensagem === 'login-necessario') {
+    mostrarToast(
+        'Você precisa entrar na sua conta para acessar esta página.',
+        'info'
+    );
+
+    removerDados('mensagemLogin');
+}
+
+
+// Recuperar página de retorno
+const parametros = new URLSearchParams(window.location.search);
+
+const retorno = parametros.get('retorno');
+
+// Permitir somente as páginas protegidas previstas
+const paginasPermitidas = [
+    'perfil.html',
+    'relatorios.html'
+];
+
+let paginaDestino = 'index.html';
+
+if (paginasPermitidas.includes(retorno)) {
+    paginaDestino = retorno;
+}
+
+
 // Recuperar tentativas e bloqueio
-let tentativasFalhas = Number(lerDados('tentativasFalhas', 0));
-
-let bloqueioAte = Number(lerDados('bloqueioAte', 0));
-
-let intervalo;
+let tentativasFalhas = lerDados('tentativasFalhas', 0);
+let bloqueioAte = lerDados('bloqueioAte', 0);
 
 
-// Envio do formulário
-formLogin.addEventListener('submit', async function (event) {
-    event.preventDefault();
+// Controlar bloqueio
+function verificarBloqueio() {
+    const tempoRestante = Math.ceil(
+        (bloqueioAte - Date.now()) / 1000
+    );
 
-    // Verificar se há bloqueio
-    if (Date.now() < bloqueioAte) {
+    if (tempoRestante > 0) {
+        botaoLogin.disabled = true;
+
+        erroLogin.textContent =
+            `Muitas tentativas. Tente novamente em ${tempoRestante} segundos.`;
+
+        return true;
+    }
+
+    botaoLogin.disabled = false;
+
+    return false;
+}
+
+
+// Registrar tentativa incorreta
+function registrarTentativaFalha() {
+    tentativasFalhas++;
+
+    salvarDados('tentativasFalhas', tentativasFalhas);
+
+    if (tentativasFalhas >= 3) {
+        bloqueioAte = Date.now() + (60 * 1000);
+
+        salvarDados('bloqueioAte', bloqueioAte);
+
+        verificarBloqueio();
+
         return;
     }
 
+    erroLogin.textContent =
+        `E-mail ou senha incorretos. Tentativa ${tentativasFalhas} de 3.`;
+}
+
+
+// Atualizar contagem regressiva
+const intervaloBloqueio = setInterval(function () {
+    if (bloqueioAte > 0) {
+        const bloqueado = verificarBloqueio();
+
+        if (!bloqueado) {
+            clearInterval(intervaloBloqueio);
+
+            tentativasFalhas = 0;
+            bloqueioAte = 0;
+
+            salvarDados('tentativasFalhas', 0);
+            salvarDados('bloqueioAte', 0);
+
+            erroLogin.textContent = '';
+        }
+    }
+}, 1000);
+
+
+// Verificar bloqueio ao abrir a página
+verificarBloqueio();
+
+
+// Realizar login
+formLogin.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    // Verificar se está bloqueado
+    if (verificarBloqueio()) {
+        return;
+    }
+
+    // Recuperar informações
     const email = campoEmail.value.trim().toLowerCase();
     const senha = campoSenha.value;
 
-    // Recuperar clientes atualizados
+    // Recuperar clientes
     const clientes = carregarClientes();
 
     // Procurar cliente pelo e-mail
-    const cliente = clientes.find(c => c.email === email);
+    const cliente = clientes.find(
+        c => c.email.toLowerCase() === email
+    );
 
+    // Verificar se o cliente existe
     if (!cliente) {
         registrarTentativaFalha();
         return;
@@ -57,83 +159,24 @@ formLogin.addEventListener('submit', async function (event) {
     // Gerar hash da senha informada
     const hash = await gerarHash(senha, cliente.salt);
 
-    // Comparar hashes
+    // Verificar senha
     if (hash !== cliente.senhaHash) {
         registrarTentativaFalha();
         return;
     }
 
-    // Login realizado
+    // Login realizado com sucesso
+
+    // Limpar tentativas e bloqueio
     tentativasFalhas = 0;
     bloqueioAte = 0;
 
     removerDados('tentativasFalhas');
     removerDados('bloqueioAte');
 
-    erroLogin.textContent = '';
-
     // Registrar cliente logado
     salvarDados('clienteLogado', cliente.id);
 
-    window.location.href = 'index.html';
+    // Redirecionar para a página desejada
+    window.location.href = paginaDestino;
 });
-
-
-// Registrar tentativa de login incorreta
-function registrarTentativaFalha() {
-    tentativasFalhas++;
-
-    salvarDados('tentativasFalhas', tentativasFalhas);
-
-    if (tentativasFalhas >= 3) {
-        bloqueioAte = Date.now() + 60000;
-
-        salvarDados('bloqueioAte', bloqueioAte);
-
-        verificarBloqueio();
-    } else {
-        erroLogin.textContent = 'E-mail ou senha inválidos.';
-    }
-}
-
-
-// Verificar bloqueio de login
-function verificarBloqueio() {
-    const agora = Date.now();
-
-    if (agora < bloqueioAte) {
-        botaoLogin.disabled = true;
-
-        if (intervalo) {
-            clearInterval(intervalo);
-        }
-
-        intervalo = setInterval(() => {
-            const restante = Math.ceil((bloqueioAte - Date.now()) / 1000);
-
-            if (restante <= 0) {
-                clearInterval(intervalo);
-
-                tentativasFalhas = 0;
-                bloqueioAte = 0;
-
-                removerDados('tentativasFalhas');
-                removerDados('bloqueioAte');
-
-                erroLogin.textContent = '';
-
-                botaoLogin.disabled = false;
-
-                return;
-            }
-
-            erroLogin.textContent =
-                `Muitas tentativas. Tente novamente em ${restante} segundos.`;
-
-        }, 1000);
-    }
-}
-
-
-// Verificar se já existe um bloqueio
-verificarBloqueio();

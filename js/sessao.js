@@ -1,6 +1,7 @@
-// Imports
+
 import {
     lerDados,
+    salvarDados,
     buscarClientePorId
 } from './storage.js';
 
@@ -17,12 +18,26 @@ export function obterClienteLogado() {
 }
 
 
+// Redirecionar para o login
+function redirecionarLogin() {
+    const paginaAtual = window.location.pathname.split('/').pop();
+
+    salvarDados(
+        'mensagemLogin',
+        'login-necessario'
+    );
+
+    window.location.href =
+        `login.html?retorno=${encodeURIComponent(paginaAtual)}`;
+}
+
+
 // Verificar se o cliente está logado
 export function exigirLogin() {
     const cliente = obterClienteLogado();
 
     if (!cliente) {
-        window.location.href = 'login.html';
+        redirecionarLogin();
         return null;
     }
 
@@ -46,7 +61,8 @@ export function exigirAdmin() {
     return cliente;
 }
 
-// Verifica se o usuário está logado e esconde as páginas que não podem ser acessadas por ele
+
+// Controlar navegação
 const cliente = obterClienteLogado();
 
 const navCadastro = document.getElementById('nav-cadastro');
@@ -54,7 +70,6 @@ const navLogin = document.getElementById('nav-login');
 const navPerfil = document.getElementById('nav-perfil');
 const navRelatorios = document.getElementById('nav-relatorios');
 
-// Cadastre e Login disponíveis apenas para usuários sem conta
 if (navCadastro) {
     navCadastro.hidden = cliente !== null;
 }
@@ -63,12 +78,10 @@ if (navLogin) {
     navLogin.hidden = cliente !== null;
 }
 
-// Perfil disponível somente para usuários logados
 if (navPerfil) {
     navPerfil.hidden = cliente === null;
 }
 
-// Relatórios disponível somente para administradores
 if (navRelatorios) {
     navRelatorios.hidden = !cliente || cliente.perfil !== 'admin';
 }
