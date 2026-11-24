@@ -19,6 +19,24 @@ const campoPrecoMax = document.getElementById('preco-max');
 const campoOrdem = document.getElementById('ordem');
 
 
+// Elementos do modal
+const dialogProduto = document.getElementById('dialog-produto');
+
+const detalheImagem = document.getElementById('detalhe-imagem');
+const detalheNome = document.getElementById('detalhe-nome');
+const detalheCategoria = document.getElementById('detalhe-categoria');
+const detalheDescricao = document.getElementById('detalhe-descricao');
+const detalhePreco = document.getElementById('detalhe-preco');
+const detalheEstoque = document.getElementById('detalhe-estoque');
+const detalheQuantidade = document.getElementById('detalhe-quantidade');
+
+const botaoFecharDialog = document.getElementById('fechar-dialog');
+const detalheAdicionar = document.getElementById('detalhe-adicionar');
+
+const quantidadeMenos = document.getElementById('quantidade-menos');
+const quantidadeMais = document.getElementById('quantidade-mais');
+
+
 // Nomes das categorias
 const categorias = {
     acao: 'Ação',
@@ -30,8 +48,9 @@ const categorias = {
 };
 
 
-// Temporizador da busca
+// Variáveis
 let temporizadorBusca;
+let produtoSelecionado = null;
 
 
 // Exibir produtos
@@ -66,17 +85,12 @@ function renderizarProdutos(listaProdutos) {
         categoria.className = 'card-produto-categoria';
         categoria.textContent = categorias[produto.categoria];
 
-        // Descrição
-        const descricao = document.createElement('p');
-        descricao.className = 'card-produto-descricao';
-        descricao.textContent = produto.descricao;
-
         // Preço
         const preco = document.createElement('p');
         preco.className = 'card-produto-preco';
         preco.textContent = formatarMoeda(produto.preco);
 
-        // Botão
+        // Botão de adicionar ao carrinho
         const botao = document.createElement('button');
         botao.type = 'button';
         botao.className = 'botao botao-vermelho botao-comprar';
@@ -93,14 +107,147 @@ function renderizarProdutos(listaProdutos) {
             imagem,
             titulo,
             categoria,
-            descricao,
             preco,
             botao
         );
 
+        // Botão de detalhes
+        if (dialogProduto) {
+
+            const botaoDetalhes = document.createElement('button');
+            botaoDetalhes.type = 'button';
+            botaoDetalhes.className = 'botao';
+            botaoDetalhes.textContent = 'Ver detalhes';
+
+            botaoDetalhes.addEventListener('click', function () {
+                abrirDetalhesProduto(produto);
+            });
+
+            card.appendChild(botaoDetalhes);
+        }
+
         // Adicionar card à grade
         gradeProdutos.appendChild(card);
     });
+}
+
+
+// Atualizar botões de quantidade
+function atualizarBotoesQuantidade() {
+
+    const quantidade = Number(detalheQuantidade.value);
+    const estoque = Number(detalheQuantidade.max);
+
+    quantidadeMenos.disabled = quantidade <= 1;
+    quantidadeMais.disabled = quantidade >= estoque;
+}
+
+
+// Abrir detalhes do produto
+function abrirDetalhesProduto(produto) {
+
+    produtoSelecionado = produto;
+
+    detalheImagem.src = produto.imagem;
+    detalheImagem.alt = produto.nome;
+
+    detalheNome.textContent = produto.nome;
+    detalheCategoria.textContent = categorias[produto.categoria];
+    detalheDescricao.textContent = produto.descricao;
+    detalhePreco.textContent = formatarMoeda(produto.preco);
+
+    detalheEstoque.textContent =
+        'Estoque disponível: ' + produto.estoque;
+
+    detalheQuantidade.value = 1;
+    detalheQuantidade.min = 1;
+    detalheQuantidade.max = produto.estoque;
+
+    detalheQuantidade.disabled = produto.estoque === 0;
+
+    detalheAdicionar.disabled = produto.estoque === 0;
+
+    if (produto.estoque === 0) {
+        detalheAdicionar.textContent = 'Sem estoque';
+    } else {
+        detalheAdicionar.textContent = 'Adicionar';
+    }
+
+    atualizarBotoesQuantidade();
+
+    dialogProduto.showModal();
+}
+
+
+// Fechar modal
+if (botaoFecharDialog) {
+
+    botaoFecharDialog.addEventListener('click', function () {
+        dialogProduto.close();
+    });
+
+}
+
+
+// Diminuir quantidade
+if (quantidadeMenos) {
+
+    quantidadeMenos.addEventListener('click', function () {
+
+        let quantidade = Number(detalheQuantidade.value);
+
+        if (quantidade > 1) {
+            detalheQuantidade.value = quantidade - 1;
+        }
+
+        atualizarBotoesQuantidade();
+
+    });
+
+}
+
+
+// Aumentar quantidade
+if (quantidadeMais) {
+
+    quantidadeMais.addEventListener('click', function () {
+
+        let quantidade = Number(detalheQuantidade.value);
+        const estoque = Number(detalheQuantidade.max);
+
+        if (quantidade < estoque) {
+            detalheQuantidade.value = quantidade + 1;
+        }
+
+        atualizarBotoesQuantidade();
+
+    });
+
+}
+
+
+// Impedir quantidade inválida digitada manualmente
+if (detalheQuantidade) {
+
+    detalheQuantidade.addEventListener('change', function () {
+
+        let quantidade = Number(detalheQuantidade.value);
+        const estoque = Number(detalheQuantidade.max);
+
+        if (quantidade < 1 || detalheQuantidade.value === '') {
+            quantidade = 1;
+        }
+
+        if (quantidade > estoque) {
+            quantidade = estoque;
+        }
+
+        detalheQuantidade.value = quantidade;
+
+        atualizarBotoesQuantidade();
+
+    });
+
 }
 
 
@@ -189,7 +336,7 @@ function aplicarFiltros() {
 }
 
 
-// Configurar filtros somente quando o formulário existir
+// Configurar filtros
 if (formularioFiltros) {
 
     // Impedir envio tradicional do formulário

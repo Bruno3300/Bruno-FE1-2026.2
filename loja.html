@@ -241,6 +241,55 @@
 
     <div id="toast" class="toast"></div>
 
+
+    <dialog id="dialog-produto">
+        <div class="conteudo-dialog">
+
+            <div class="detalhe-imagem-container">
+                <img id="detalhe-imagem" src="" alt="">
+            </div>
+
+            <div class="detalhe-informacoes">
+
+                <button type="button" id="fechar-dialog" class="botao">
+                    Fechar
+                </button>
+
+                <h2 id="detalhe-nome"></h2>
+
+                <p id="detalhe-categoria"></p>
+
+                <p id="detalhe-descricao"></p>
+
+                <hr>
+
+                <p id="detalhe-preco"></p>
+
+                <p id="detalhe-estoque"></p>
+
+                <div class="detalhe-compra">
+
+                    <div class="controle-quantidade">
+
+                        <button type="button" id="quantidade-menos">−</button>
+
+                        <input type="number" id="detalhe-quantidade" min="1" value="1">
+
+                        <button type="button" id="quantidade-mais">+</button>
+
+                    </div>
+
+                    <button type="button" id="detalhe-adicionar" class="botao botao-vermelho botao-comprar">
+                        Adicionar ao carrinho
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </dialog>
+
 </body>
 
 </html>

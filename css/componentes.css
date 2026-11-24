@@ -94,34 +94,36 @@
     margin-bottom: 2.5rem;
 }
 
+
 /* Produtos */
 
+/* Grade */
 .grade-produtos {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 250px));
     justify-content: center;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 1.5rem;
 }
 
+/* Card */
 .card-produto {
     display: flex;
     flex-direction: column;
 
     background-color: var(--cor-superficie);
     border: var(--borda);
-    border-radius: 5px;
+    border-radius: 6px;
 
     overflow: hidden;
+    box-sizing: border-box;
 
     height: 100%;
-    box-sizing: border-box;
+
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card-produto button {
-    align-self: center;
-    margin-bottom: 1rem;
-}
-
+/* Imagem */
 .card-produto-imagem {
     display: block;
     width: 100%;
@@ -131,38 +133,72 @@
     border-bottom: 2px solid var(--cor-tinta);
 }
 
+/* Título */
 .card-produto-titulo {
-    padding: 0.5rem;
-    min-height: 3lh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 3.5rem;
+    padding: 0.7rem;
+
     margin: 0;
-    box-sizing: border-box;
-    border-bottom: var(--borda);
-}
 
-.card-produto-descricao {
-    display: block;
-    padding: 0 0.5rem;
-    font-size: 0.9rem;
-    color: var(--cor-texto-suave);
-    min-height: 2rem;
-    box-sizing: border-box;
-}
-
-.card-produto-preco {
-    padding: 0.5rem;
-    margin-top: auto;
+    text-align: center;
     font-family: var(--fonte-titulo);
-    font-size: 1.2rem;
+
+    border-bottom: var(--borda);
+    box-sizing: border-box;
+}
+
+/* Categoria */
+.card-produto-categoria {
+    margin: 0;
+    padding: 0.6rem 0.7rem 0;
+
+    font-size: 0.85rem;
+    font-weight: bold;
+
     color: var(--cor-primaria-escura);
 }
 
-.card-produto--catalogo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+/* Descrição */
+.card-produto-descricao {
+    padding: 0 0.7rem;
+    margin: 0.4rem 0;
+
+    font-size: 0.9rem;
+    line-height: 1.5;
+
+    color: var(--cor-texto-suave);
 }
+
+/* Preço */
+.card-produto-preco {
+    padding: 0 0.7rem;
+    margin-top: auto;
+    margin-bottom: 0.8rem;
+
+    font-family: var(--fonte-titulo);
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    color: var(--cor-primaria-escura);
+}
+
+/* Botões */
+.card-produto button {
+    align-self: center;
+
+    width: 85%;
+    margin: 0.35rem auto;
+}
+
+/* Último botão */
+.card-produto button:last-child {
+    margin-bottom: 1rem;
+}
+
 
 /* erros */
 .erro {
@@ -342,4 +378,301 @@ dialog::backdrop {
 
 #cancelar-remocao:hover {
     background-color: var(--cor-superficie-escuro3);
+}
+
+
+
+
+/* =================================
+   MODAL DE DETALHES DO PRODUTO
+================================= */
+
+#dialog-produto {
+    width: min(90%, 950px);
+    max-width: 950px;
+    max-height: 85vh;
+
+    padding: 1.5rem;
+
+    overflow-y: auto;
+    box-sizing: border-box;
+
+    background-color: var(--cor-superficie);
+    color: var(--cor-texto);
+
+    border: var(--borda);
+    border-radius: 6px;
+    box-shadow: var(--sombra-dura);
+}
+
+/* Fundo escuro */
+#dialog-produto::backdrop {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+
+/* =================================
+   ORGANIZAÇÃO PRINCIPAL
+================================= */
+
+.conteudo-dialog {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+
+/* =================================
+   IMAGEM
+================================= */
+
+.detalhe-imagem-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 450px;
+    padding: 1rem;
+
+    background-color: var(--cor-fundo);
+    border: var(--borda);
+    border-radius: 5px;
+
+    box-sizing: border-box;
+}
+
+#detalhe-imagem {
+    display: block;
+
+    width: 100%;
+    max-height: 450px;
+
+    object-fit: contain;
+    object-position: center;
+
+    border: 2px solid var(--cor-tinta);
+    border-radius: 5px;
+}
+
+
+/* =================================
+   INFORMAÇÕES
+================================= */
+
+.detalhe-informacoes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+/* Botão fechar */
+#fechar-dialog {
+    align-self: flex-end;
+    margin: 0;
+}
+
+
+/* Nome */
+#detalhe-nome {
+    margin: 0;
+
+    font-family: var(--fonte-titulo);
+    font-size: 1.8rem;
+}
+
+
+/* Categoria */
+#detalhe-categoria {
+    margin: 0;
+
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    color: var(--cor-primaria-escura);
+}
+
+
+/* Descrição */
+#detalhe-descricao {
+    margin: 0;
+
+    line-height: 1.6;
+    color: var(--cor-texto-suave);
+}
+
+
+/* Separador */
+.detalhe-informacoes hr {
+    width: 100%;
+
+    border: 0;
+    border-top: var(--borda);
+}
+
+
+/* Preço */
+#detalhe-preco {
+    margin: 0;
+
+    font-family: var(--fonte-titulo);
+    font-size: 1.7rem;
+    font-weight: bold;
+
+    color: var(--cor-primaria-escura);
+}
+
+
+/* Estoque */
+#detalhe-estoque {
+    margin: 0;
+}
+
+
+/* =================================
+   ÁREA DE COMPRA
+================================= */
+
+.detalhe-compra {
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+
+/* Seletor de quantidade */
+.controle-quantidade {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-width: 140px;
+    height: 48px;
+
+    border: var(--borda);
+    border-radius: 5px;
+
+    background-color: var(--cor-superficie);
+
+    box-sizing: border-box;
+}
+
+
+/* Botões de quantidade */
+.controle-quantidade button {
+    width: 34px;
+    height: 34px;
+
+    margin: 0 5px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.controle-quantidade button:hover {
+    background-color: var(--cor-borda);
+}
+
+.controle-quantidade button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+
+/* Campo numérico */
+#detalhe-quantidade {
+    width: 35px;
+    min-width: 0;
+
+    padding: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    text-align: center;
+    font-size: 1.1rem;
+
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+#detalhe-quantidade::-webkit-inner-spin-button,
+#detalhe-quantidade::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Botão adicionar */
+#detalhe-adicionar {
+    flex: 1;
+    height: 48px;
+
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+}
+
+
+/* =================================
+   RESPONSIVIDADE
+================================= */
+
+@media (max-width: 650px) {
+
+    #dialog-produto {
+        width: 94%;
+        max-height: 90vh;
+
+        padding: 1rem;
+    }
+
+    .conteudo-dialog {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .detalhe-imagem-container {
+        min-height: auto;
+    }
+
+    #detalhe-imagem {
+        max-height: 300px;
+    }
+
+    #detalhe-nome {
+        font-size: 1.4rem;
+    }
+
+}
+
+
+@media (max-width: 400px) {
+
+    .detalhe-compra {
+        gap: 0.5rem;
+    }
+
+    .controle-quantidade {
+        min-width: 115px;
+    }
+
 }
