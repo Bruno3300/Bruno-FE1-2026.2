@@ -94,12 +94,12 @@
     margin-bottom: 2.5rem;
 }
 
-/* produtos */
-
+/* Produtos */
 
 .grade-produtos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 250px));
+    justify-content: center;
     gap: 1rem;
 }
 
@@ -127,7 +127,6 @@
     width: 100%;
     aspect-ratio: 2 / 3;
     object-fit: cover;
-    align-self: center;
 
     border-bottom: 2px solid var(--cor-tinta);
 }
@@ -140,19 +139,17 @@
     border-bottom: var(--borda);
 }
 
-
 .card-produto-descricao {
     display: block;
     padding: 0 0.5rem;
     font-size: 0.9rem;
     color: var(--cor-texto-suave);
     min-height: 2rem;
-    align-items: stretch;
     box-sizing: border-box;
 }
 
 .card-produto-preco {
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem;
     margin-top: auto;
     font-family: var(--fonte-titulo);
     font-size: 1.2rem;

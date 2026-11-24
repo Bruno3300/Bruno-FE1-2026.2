@@ -212,4 +212,12 @@ export async function gerarHash(senha, salt) {
     return hash;
 }
 
+// Formatar valor como moeda brasileira
+export function formatarMoeda(valor) {
+    return valor.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+}
+
 
