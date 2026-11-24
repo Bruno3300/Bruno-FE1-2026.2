@@ -19,6 +19,10 @@ import {
     gerarID
 } from './utils.js';
 
+import {
+    mostrarToast
+} from './ui.js'
+
 
 // Captação de formulário e campos
 const formCadastro = document.getElementById('form-cadastro');
@@ -126,6 +130,15 @@ formCadastro.addEventListener('submit', async function (event) {
     // Salvar cliente
     salvarClientes(cliente);
 
+    mostrarToast(
+        'Conta criada com sucesso! Redirecionando para o login.',
+        'sucesso'
+    );
+
+    setTimeout(function () {
+        window.location.href = 'login.html';
+    }, 3000);
+
     // Limpar formulário
     formCadastro.reset();
 
@@ -140,6 +153,8 @@ formCadastro.addEventListener('submit', async function (event) {
     naoMinimo.textContent = '';
     naoLetra.textContent = '';
     naoNumero.textContent = '';
+
+
 });
 
 

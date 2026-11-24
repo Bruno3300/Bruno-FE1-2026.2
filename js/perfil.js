@@ -4,7 +4,8 @@ import {
     carregarClientes,
     atualizarCliente,
     removerCliente,
-    removerDados
+    removerDados,
+    salvarDados
 } from './storage.js';
 
 import {
@@ -187,6 +188,8 @@ if (cliente) {
         if (removido) {
             removerDados('clienteLogado');
 
+            salvarDados('mensagemLogin', 'conta-removida');
+
             window.location.href = 'index.html';
         }
     });
@@ -195,6 +198,8 @@ if (cliente) {
     // Sair da conta
     botaoSair.addEventListener('click', function () {
         removerDados('clienteLogado');
+
+        salvarDados('mensagemLogin', 'logout-sucesso');
 
         window.location.href = 'index.html';
     });

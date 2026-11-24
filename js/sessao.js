@@ -2,9 +2,54 @@
 import {
     lerDados,
     salvarDados,
-    buscarClientePorId
+    buscarClientePorId,
+    removerDados
 } from './storage.js';
 
+import {
+    mostrarToast
+} from './ui.js';
+
+
+// Recuperar mensagem salva
+const mensagemLogin = lerDados('mensagemLogin');
+
+if (mensagemLogin === 'login-necessario') {
+    mostrarToast(
+        'Você precisa entrar na sua conta para acessar esta página.',
+        'info'
+    );
+
+    removerDados('mensagemLogin');
+}
+
+if (mensagemLogin === 'login-sucesso') {
+    mostrarToast(
+        'Login realizado com sucesso!',
+        'sucesso'
+    );
+
+    removerDados('mensagemLogin');
+}
+
+if (mensagemLogin === 'logout-sucesso') {
+    mostrarToast(
+        'Você saiu da sua conta com sucesso!',
+        'sucesso'
+    );
+
+
+    removerDados('mensagemLogin');
+}
+
+if (mensagemLogin === 'conta-removida') {
+    mostrarToast(
+        'Sua conta foi removida com sucesso!',
+        'sucesso'
+    );
+
+    removerDados('mensagemLogin');
+}
 
 // Recuperar cliente logado
 export function obterClienteLogado() {

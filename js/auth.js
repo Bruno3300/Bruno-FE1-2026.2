@@ -177,6 +177,9 @@ formLogin.addEventListener('submit', async function (event) {
     // Registrar cliente logado
     salvarDados('clienteLogado', cliente.id);
 
+    // Salvar mensagem de sucesso
+    salvarDados('mensagemLogin', 'login-sucesso');
+
     // Redirecionar para a página desejada
     window.location.href = paginaDestino;
 });
