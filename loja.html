@@ -73,7 +73,7 @@
 
                     <tfoot>
                         <tr>
-                            <th scope="row" colspan="3">Total</th>
+                            <th scope="row" colspan="3">Total Itens</th>
                             <td colspan="2" id="carrinho-total" class="carrinho-total">
                                 R$ 0,00
                             </td>
@@ -83,6 +83,68 @@
                 </table>
 
             </div>
+
+            <div id="frete-cupom">
+
+                <!-- CEP -->
+                <div class="campo">
+                    <label for="cep">CEP</label>
+
+                    <div class="campo-acao">
+                        <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9">
+
+                        <button type="button" class="botao" id="botao-calcular-frete">
+                            Calcular
+                        </button>
+                    </div>
+
+                    <span class="erro" id="erro-cep"></span>
+                    <div id="resultado-frete"></div>
+                </div>
+
+                <!-- Cupom -->
+                <div class="campo">
+                    <label for="cupom">Cupom de desconto</label>
+
+                    <div class="campo-acao">
+                        <input type="text" id="cupom" name="cupom" placeholder="Digite seu cupom">
+
+                        <button type="button" class="botao" id="botao-aplicar-cupom">
+                            Aplicar cupom
+                        </button>
+                    </div>
+
+                    <span class="erro" id="erro-cupom"></span>
+                </div>
+
+            </div>
+
+            <!-- Resumo do carrinho -->
+            <section id="resumo-carrinho">
+
+                <h2>Resumo do pedido</h2>
+
+                <div class="resumo-item">
+                    <span>Total dos produtos</span>
+                    <span id="resumo-produtos">R$ 0,00</span>
+                </div>
+
+                <div class="resumo-item">
+                    <span>Frete (CEP)</span>
+                    <span id="resumo-frete">R$ 0,00</span>
+                </div>
+
+                <div class="resumo-item">
+                    <span>Desconto</span>
+                    <span id="resumo-desconto">R$ 0,00</span>
+                </div>
+
+                <div class="resumo-item resumo-total">
+                    <strong>Total do pedido</strong>
+                    <strong id="resumo-total">R$ 0,00</strong>
+                </div>
+
+            </section>
 
             <button type="button" class="botao botao-vermelho" id="botao-finalizar">
                 Finalizar compra

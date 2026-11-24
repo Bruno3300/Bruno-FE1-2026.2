@@ -2,13 +2,156 @@ import { produtos } from '../data/produtos.js';
 import { mostrarToast } from './ui.js';
 import { carregarCarrinho, salvarCarrinho, removerCarrinho } from './storage.js';
 import { obterClienteLogado } from './sessao.js';
-import { formatarMoeda } from './utils.js';
+import { formatarCep, formatarMoeda, valiadarCep } from './utils.js';
 
 
 // Elementos do HTML
 const tabelaCarrinho = document.getElementById('itens-carrinho');
 const totalCarrinho = document.getElementById('carrinho-total');
 const secaoCarrinho = document.getElementById('carrinho');
+
+const campoCep = document.getElementById('cep')
+const botaoCalcularFrete = document.getElementById('botao-calcular-frete');
+const erroCep = document.getElementById('erro-cep');
+const resultadoFrete = document.getElementById('resultado-frete');
+
+const resumoProdutos = document.getElementById('resumo-produtos');
+const resumoFrete = document.getElementById('resumo-frete');
+const resumoDesconto = document.getElementById('resumo-desconto');
+const resumoTotal = document.getElementById('resumo-total');
+
+const campoCupom = document.getElementById('cupom');
+const botaoAplicarCupom = document.getElementById('botao-aplicar-cupom');
+const erroCupom = document.getElementById('erro-cupom');
+
+const FRETE_GRATIS_ACIMA = 250;
+
+
+let cepAtual = null;
+let totalProdutosAtual = 0;
+let cupomAplicado = null;
+let descontoAtual = 0;
+
+// Cupons 
+const cupons = {
+    MANGA10: {
+        tipo: 'percentual',
+        valor: 10,
+        minimo: 100,
+        validade: '2026-10-31'
+    },
+
+    MANGA20: {
+        tipo: 'fixo',
+        valor: 20,
+        minimo: 150,
+        validade: '2027-12-31'
+    },
+
+    FRETEGRATIS: {
+        tipo: 'frete',
+        valor: 0,
+        minimo: 80,
+        validade: '2027-12-31'
+    },
+
+    PROMO15: {
+        tipo: 'percentual',
+        valor: 15,
+        minimo: 50,
+        validade: '2027-12-31'
+    }
+};
+
+// Frete
+campoCep.addEventListener('input', function () {
+    campoCep.value = formatarCep(campoCep.value);
+});
+
+
+
+function calcularCep(total, cep) {
+    if (total >= FRETE_GRATIS_ACIMA) {
+        return 0;
+    }
+    if (cep >= 80000000 && cep <= 99999999) {
+        return 15;
+    } else if (cep >= 20000000 && cep <= 79999999) {
+        return 25;
+    } else if (cep >= 0 && cep <= 19999999) {
+        return 40;
+    }
+
+    return null;
+}
+
+botaoCalcularFrete.addEventListener('click', function () {
+    const cep = campoCep.value.replace(/\D/g, '');
+
+    const erro = valiadarCep(cep);
+
+    erroCep.textContent = erro;
+
+    if (erro) {
+        cepAtual = null;
+    } else {
+        cepAtual = Number(cep);
+    }
+
+    atualizarResumo(totalProdutosAtual);
+});
+
+botaoAplicarCupom.addEventListener('click', function () {
+    const codigo = campoCupom.value.trim().toUpperCase();
+
+    if (codigo === '') {
+        erroCupom.textContent = 'Digite um código de cupom.';
+        return;
+    }
+
+    const cupom = cupons[codigo];
+
+    if (!cupom) {
+        erroCupom.textContent = 'Cupom inválido ou inexistente.';
+        return;
+    }
+
+    const dataAtual = new Date();
+    const dataValidade = new Date(cupom.validade + 'T23:59:59');
+
+    if (dataAtual > dataValidade) {
+        erroCupom.textContent = 'Este cupom está fora da validade.';
+        return;
+    }
+
+    if (totalProdutosAtual < cupom.minimo) {
+        erroCupom.textContent =
+            `Compra mínima de ${formatarMoeda(cupom.minimo)} para utilizar este cupom.`;
+        return;
+    }
+
+    cupomAplicado = cupom;
+
+    erroCupom.textContent = '';
+
+    atualizarResumo(totalProdutosAtual);
+
+    mostrarToast('Cupom aplicado com sucesso!', 'info');
+});
+
+campoCep.addEventListener('input', function () {
+    campoCep.value = formatarCep(campoCep.value);
+
+    cepAtual = null;
+    erroCep.textContent = '';
+    resultadoFrete.textContent = '';
+
+    atualizarResumo(totalProdutosAtual);
+});
+
+campoCupom.addEventListener('input', function () {
+    erroCupom.textContent = '';
+});
 
 
 // Carrinho do cliente logado (ou do visitante, se não houver login)
@@ -146,6 +289,8 @@ export function renderizarCarrinho() {
     if (totalCarrinho) {
         totalCarrinho.textContent = formatarMoeda(total);
     }
+
+    atualizarResumo(total);
 }
 
 
@@ -239,6 +384,56 @@ document.addEventListener('click', function (evento) {
     }
 });
 
+function atualizarResumo(totalProdutos) {
+    totalProdutosAtual = totalProdutos;
 
+    let valorFrete = 0;
+    let valorDesconto = 0;
+
+    // Calcular frete
+    if (cepAtual !== null) {
+        const frete = calcularCep(totalProdutos, cepAtual);
+
+        if (frete !== null) {
+            valorFrete = frete;
+        }
+    }
+
+    // Aplicar regras do cupom
+    if (cupomAplicado) {
+        if (cupomAplicado.tipo === 'percentual') {
+            valorDesconto = totalProdutos * cupomAplicado.valor / 100;
+        }
+
+        if (cupomAplicado.tipo === 'fixo') {
+            valorDesconto = Math.min(cupomAplicado.valor, totalProdutos);
+        }
+
+        if (cupomAplicado.tipo === 'frete') {
+            valorDesconto = valorFrete;
+        }
+    }
+
+    descontoAtual = valorDesconto;
+
+    // Exibir resultado do frete
+    if (cepAtual === null) {
+        resultadoFrete.textContent = '';
+    } else if (valorFrete === 0) {
+        resultadoFrete.textContent = 'Frete grátis!';
+    } else {
+        resultadoFrete.textContent = `Frete: ${formatarMoeda(valorFrete)}`;
+    }
+
+    resumoProdutos.textContent = formatarMoeda(totalProdutos);
+    resumoFrete.textContent = formatarMoeda(valorFrete);
+    resumoDesconto.textContent = formatarMoeda(valorDesconto);
+
+    const total = Math.max(0, totalProdutos + valorFrete - valorDesconto);
+
+    resumoTotal.textContent = formatarMoeda(total);
+}
 // Exibir carrinho ao abrir a página
+
 renderizarCarrinho();
+

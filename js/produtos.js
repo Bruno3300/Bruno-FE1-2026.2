@@ -6,7 +6,7 @@ import { formatarMoeda } from './utils.js';
 const gradeProdutos = document.getElementById('grade-produtos');
 
 // Elementos dos filtros
-const formularioFiltros = document.getElementById('form-filtros');
+const formularioFiltros = document.getElementById('filtros');
 const campoBusca = document.getElementById('busca');
 const campoCategoria = document.getElementById('categoria');
 const campoPrecoMin = document.getElementById('preco-min');

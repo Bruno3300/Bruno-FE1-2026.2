@@ -19,8 +19,25 @@ export function formatarTelefone(telefone) {
         .replace(/(\d{5})(\d)/, '$1-$2');
 }
 
+export function formatarCep(cep) {
+    return cep
+        .replace(/\D/g, '')
+        .slice(0, 8)
+        .replace(/(\d{5})(\d)/, '$1-$2')
+}
 
 // Validações (retornam '' quando válido)
+
+export function valiadarCep(cep) {
+    cep = cep.replace(/\D/g, '');
+
+    if (cep.length < 8) {
+        return 'Digite um CEP válido.';
+    }
+
+    return '';
+}
+
 export function validarNome(nome) {
     const partes = nome.trim().split(/\s+/);
 

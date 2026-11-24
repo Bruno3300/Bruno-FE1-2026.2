@@ -166,3 +166,57 @@ td {
     font-family: var(--fonte-titulo);
     font-size: 2rem;
 }
+
+/* Resumo do carrinho */
+#resumo-carrinho {
+    margin-top: 1.5rem;
+    padding: 1rem;
+
+    background-color: var(--cor-superficie);
+    border: var(--borda);
+    border-radius: 5px;
+}
+
+#resumo-carrinho h2 {
+    margin-bottom: 1rem;
+}
+
+.resumo-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    padding: 0.5rem 0;
+
+    border-bottom: var(--borda);
+}
+
+.resumo-total {
+    margin-top: 0.5rem;
+    border-bottom: none;
+    font-size: 1.1rem;
+}
+
+/* Frete e cupom */
+#frete-cupom {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+}
+
+#frete-cupom .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.campo-acao {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.campo-acao input {
+    flex: 1;
+    min-width: 0;
+}
