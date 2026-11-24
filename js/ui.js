@@ -9,7 +9,7 @@ export function mostrarToast(mensagem, tipo = 'info') {
     }
 
     toast.textContent = mensagem;
-    toast.className = 'toast ' + tipo + ' mostrar';
+    toast.className = `toast ${tipo} mostrar`;
 
     clearTimeout(tempoToast);
 
@@ -19,17 +19,31 @@ export function mostrarToast(mensagem, tipo = 'info') {
 }
 
 
-// Abrir modal
+// Abrir e fechar modal
 export function abrirModal(id) {
-    const modal = document.getElementById(id);
+    document.getElementById(id).showModal();
+}
 
-    modal.showModal();
+export function fecharModal(id) {
+    document.getElementById(id).close();
 }
 
 
-// Fechar modal
-export function fecharModal(id) {
-    const modal = document.getElementById(id);
+// Exibir mensagens de erro dos formulários
+// Recebe uma lista de [campo, elementoDeErro, mensagem].
+// Mostra todas as mensagens, foca o primeiro campo com erro
+// e retorna true se houver algum erro.
+export function exibirErros(validacoes) {
+    validacoes.forEach(function ([, elementoErro, mensagem]) {
+        elementoErro.textContent = mensagem;
+    });
 
-    modal.close();
+    const primeiroErro = validacoes.find(validacao => validacao[2]);
+
+    if (primeiroErro) {
+        primeiroErro[0].focus();
+        return true;
+    }
+
+    return false;
 }

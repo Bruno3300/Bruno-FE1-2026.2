@@ -1,58 +1,40 @@
-// imports
 import { lerDados, salvarDados } from './storage.js';
 
+
 // Máscaras
-
-// CPF
 export function formatarCpf(cpf) {
-    cpf = cpf.replace(/\D/g, '');
-
-    cpf = cpf.slice(0, 11);
-
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-
-    return cpf;
+    return cpf
+        .replace(/\D/g, '')
+        .slice(0, 11)
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 }
 
-// Telefone
 export function formatarTelefone(telefone) {
-    telefone = telefone.replace(/\D/g, '');
-
-    telefone = telefone.slice(0, 11);
-
-    telefone = telefone.replace(/^(\d{2})(\d)/, '($1) $2');
-    telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2');
-
-    return telefone;
+    return telefone
+        .replace(/\D/g, '')
+        .slice(0, 11)
+        .replace(/^(\d{2})(\d)/, '($1) $2')
+        .replace(/(\d{5})(\d)/, '$1-$2');
 }
 
 
-
-
-// validações
-
-// Nome
+// Validações (retornam '' quando válido)
 export function validarNome(nome) {
-    nome = nome.trim();
+    const partes = nome.trim().split(/\s+/);
 
-    const partesNome = nome.split(/\s+/);
-
-    if (nome.length < 3 || partesNome.length < 2) {
+    if (nome.trim().length < 3 || partes.length < 2) {
         return 'Digite seu nome completo (nome e sobrenome).';
     }
 
     return '';
 }
 
-// E-mail
 export function validarEmail(email, clientes) {
     email = email.trim().toLowerCase();
 
-    const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!formatoEmail.test(email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return 'Digite um e-mail válido.';
     }
 
@@ -63,20 +45,16 @@ export function validarEmail(email, clientes) {
     return '';
 }
 
-// Telefone
 export function validarTelefone(telefone) {
     telefone = telefone.replace(/\D/g, '');
 
-    const formatoTelefone = /^\d{10,11}$/;
-
-    if (!formatoTelefone.test(telefone)) {
+    if (!/^\d{10,11}$/.test(telefone)) {
         return 'Digite um telefone válido.';
     }
 
     return '';
 }
 
-// Senha
 export function validarSenha(senha) {
     const temLetra = /[a-zA-Z]/.test(senha);
     const temNumero = /[0-9]/.test(senha);
@@ -88,40 +66,19 @@ export function validarSenha(senha) {
     return '';
 }
 
-// Força da senha
 export function verificarForcaSenha(senha) {
-    let minimo = '';
-    let letra = '';
-    let numero = '';
-
+    // Senha vazia: nenhum aviso
     if (senha === '') {
-        return {
-            minimo,
-            letra,
-            numero
-        };
-    }
-
-    if (senha.length < 8) {
-        minimo = 'Tamanho mínimo da senha é 8 caracteres.';
-    }
-
-    if (!/[a-zA-Z]/.test(senha)) {
-        letra = 'A senha deve conter letras.';
-    }
-
-    if (!/[0-9]/.test(senha)) {
-        numero = 'A senha deve conter números.';
+        return { minimo: '', letra: '', numero: '' };
     }
 
     return {
-        minimo,
-        letra,
-        numero
+        minimo: senha.length < 8 ? 'Tamanho mínimo da senha é 8 caracteres.' : '',
+        letra: /[a-zA-Z]/.test(senha) ? '' : 'A senha deve conter letras.',
+        numero: /[0-9]/.test(senha) ? '' : 'A senha deve conter números.'
     };
 }
 
-// Confirmação de senha
 export function validarConfirmacaoSenha(senha, confirmacaoSenha) {
     if (confirmacaoSenha === '') {
         return 'Confirme sua senha.';
@@ -134,43 +91,31 @@ export function validarConfirmacaoSenha(senha, confirmacaoSenha) {
     return '';
 }
 
-// CPF
+// Calcula um dígito verificador do CPF (tamanho 9 → 1º dígito, 10 → 2º dígito)
+function calcularDigitoCpf(cpf, tamanho) {
+    let soma = 0;
+
+    for (let i = 0; i < tamanho; i++) {
+        soma += Number(cpf[i]) * (tamanho + 1 - i);
+    }
+
+    const resto = soma % 11;
+
+    return resto < 2 ? 0 : 11 - resto;
+}
+
 export function validarCpf(cpf, clientes) {
     cpf = cpf.replace(/\D/g, '');
 
-    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+    if (
+        cpf.length !== 11 ||
+        /^(\d)\1{10}$/.test(cpf) ||
+        Number(cpf[9]) !== calcularDigitoCpf(cpf, 9) ||
+        Number(cpf[10]) !== calcularDigitoCpf(cpf, 10)
+    ) {
         return 'Digite um CPF válido.';
     }
 
-    // Cálculo do primeiro dígito verificador
-    let soma = 0;
-
-    for (let i = 0; i < 9; i++) {
-        soma += Number(cpf[i]) * (10 - i);
-    }
-
-    let resto = soma % 11;
-    let digitoUm = resto < 2 ? 0 : 11 - resto;
-
-    // Cálculo do segundo dígito verificador
-    soma = 0;
-
-    for (let i = 0; i < 10; i++) {
-        soma += Number(cpf[i]) * (11 - i);
-    }
-
-    resto = soma % 11;
-    let digitoDois = resto < 2 ? 0 : 11 - resto;
-
-    // Verificar os dígitos
-    if (
-        Number(cpf[9]) !== digitoUm ||
-        Number(cpf[10]) !== digitoDois
-    ) {
-        return 'CPF inválido.';
-    }
-
-    // Verificar CPF duplicado
     if (clientes.some(cliente => cliente.cpf === cpf)) {
         return 'Este CPF já está cadastrado.';
     }
@@ -179,38 +124,33 @@ export function validarCpf(cpf, clientes) {
 }
 
 
-// Gerar ID
+// Segurança
 export function gerarID() {
-    let contador = Number(lerDados('contadorClientes', 0));
-
-    contador++;
+    const contador = Number(lerDados('contadorClientes', 0)) + 1;
 
     salvarDados('contadorClientes', contador);
 
     return 'C' + String(contador).padStart(3, '0');
 }
 
-// Gerar salt
-export function gerarSalt() {
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-
-    return Array.from(salt)
+// Converter bytes em texto hexadecimal
+function paraHex(bytes) {
+    return Array.from(bytes)
         .map(byte => byte.toString(16).padStart(2, '0'))
         .join('');
 }
 
-// Gerar hash da senha
+export function gerarSalt() {
+    return paraHex(crypto.getRandomValues(new Uint8Array(16)));
+}
+
 export async function gerarHash(senha, salt) {
     const dados = new TextEncoder().encode(senha + salt);
-
     const resultado = await crypto.subtle.digest('SHA-256', dados);
 
-    const hash = Array.from(new Uint8Array(resultado))
-        .map(byte => byte.toString(16).padStart(2, '0'))
-        .join('');
-
-    return hash;
+    return paraHex(new Uint8Array(resultado));
 }
+
 
 // Formatar valor como moeda brasileira
 export function formatarMoeda(valor) {
@@ -219,5 +159,3 @@ export function formatarMoeda(valor) {
         currency: 'BRL'
     });
 }
-
-

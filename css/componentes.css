@@ -456,9 +456,7 @@ dialog::backdrop {
 }
 
 
-/* =================================
-   INFORMAÇÕES
-================================= */
+/* Informações */
 
 .detalhe-informacoes {
     display: flex;
@@ -530,9 +528,7 @@ dialog::backdrop {
 }
 
 
-/* =================================
-   ÁREA DE COMPRA
-================================= */
+/* Área de compra*/
 
 .detalhe-compra {
     display: flex;
@@ -629,50 +625,4 @@ dialog::backdrop {
     justify-content: center;
 
     gap: 0.5rem;
-}
-
-
-/* =================================
-   RESPONSIVIDADE
-================================= */
-
-@media (max-width: 650px) {
-
-    #dialog-produto {
-        width: 94%;
-        max-height: 90vh;
-
-        padding: 1rem;
-    }
-
-    .conteudo-dialog {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .detalhe-imagem-container {
-        min-height: auto;
-    }
-
-    #detalhe-imagem {
-        max-height: 300px;
-    }
-
-    #detalhe-nome {
-        font-size: 1.4rem;
-    }
-
-}
-
-
-@media (max-width: 400px) {
-
-    .detalhe-compra {
-        gap: 0.5rem;
-    }
-
-    .controle-quantidade {
-        min-width: 115px;
-    }
-
 }

@@ -18,6 +18,7 @@
 
     <script type="module" src="js/sessao.js"></script>
     <script type="module" src="js/produtos.js"></script>
+    <script type="module" src="js/carrinho.js"></script>
 </head>
 
 <body>
@@ -46,8 +47,12 @@
     <main>
 
         <!--carrinho-->
+
+        <!-- Carrinho -->
         <section id="carrinho">
+
             <h1>Carrinho</h1>
+
             <div id="tabela-container">
 
                 <table id="tabela-carrinho">
@@ -61,70 +66,30 @@
                             <th scope="col">Remover</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td class="carrinho-produto">
-                                <img src="img/produtos/Azumanga1.jpg" alt="" class="carrinho-miniatura">
-                                <span>Azumanga Daioh Volume 01</span>
-                            </td>
 
-                            <td>
-                                <input type="number" id="qtd1" name="qtd1" value="1" min="1" max="99">
-                            </td>
-
-                            <td>R$ 16,90</td>
-
-                            <td>R$ 16,90</td>
-
-                            <td><button type="button" class="botao botao-vermelho">Remover</button></td>
-                        </tr>
-
-                        <tr>
-                            <td class="carrinho-produto">
-                                <img src="img/produtos/berserk01.jpg" alt="" class="carrinho-miniatura">
-                                <span>Berserk Volume 1</span>
-                            </td>
-
-                            <td>
-                                <input type="number" id="qtd2" name="qtd2" value="2" min="1" max="99">
-                            </td>
-
-                            <td>R$ 44,90</td>
-
-                            <td>R$ 89,80</td>
-
-                            <td><button type="button" class="botao botao-vermelho">Remover</button></td>
-                        </tr>
-
-                        <tr>
-                            <td class="carrinho-produto">
-                                <img src="img/produtos/girls01.jpg" alt="" class="carrinho-miniatura">
-                                <span>As Viajantes do Fim Volume 1</span>
-                            </td>
-
-                            <td>
-                                <input type="number" id="qtd3" name="qtd3" value="2" min="1" max="99">
-                            </td>
-
-                            <td>R$ 64,90</td>
-
-                            <td>R$ 129,80</td>
-
-                            <td><button type="button" class="botao botao-vermelho">Remover</button></td>
-                        </tr>
+                    <tbody id="itens-carrinho">
+                        <!-- Produtos adicionados pelo JavaScript -->
                     </tbody>
 
                     <tfoot>
                         <tr>
                             <th scope="row" colspan="3">Total</th>
-                            <td colspan="2" class="carrinho-total">R$ 236,50</td>
+                            <td colspan="2" id="carrinho-total" class="carrinho-total">
+                                R$ 0,00
+                            </td>
                         </tr>
                     </tfoot>
+
                 </table>
+
             </div>
 
-            <button type="button" class="botao botao-vermelho" id="botao-finalizar">Finalizar compra</button>
+            <button type="button" class="botao botao-vermelho" id="botao-finalizar">
+                Finalizar compra
+            </button>
+
         </section>
+
 
         <!--confirmação-->
         <section id="confirmacao" hidden>

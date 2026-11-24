@@ -1,8 +1,4 @@
-// Imports
-import {
-    salvarClientes,
-    carregarClientes
-} from './storage.js';
+import { salvarClientes, carregarClientes } from './storage.js';
 
 import {
     validarNome,
@@ -19,15 +15,12 @@ import {
     gerarID
 } from './utils.js';
 
-import {
-    mostrarToast
-} from './ui.js'
+import { mostrarToast, exibirErros } from './ui.js';
 
 
-// Captação de formulário e campos
+// Formulário e campos
 const formCadastro = document.getElementById('form-cadastro');
 
-// Campos
 const campoNome = document.getElementById('nomecad');
 const campoCpf = document.getElementById('cpf');
 const campoEmail = document.getElementById('emailcad');
@@ -50,13 +43,10 @@ const naoNumero = document.getElementById('nao-numero');
 
 
 // Máscaras
-// CPF
-
 campoCpf.addEventListener('input', function () {
     campoCpf.value = formatarCpf(campoCpf.value);
 });
 
-// telefone
 campoTelefone.addEventListener('input', function () {
     campoTelefone.value = formatarTelefone(campoTelefone.value);
 });
@@ -64,9 +54,7 @@ campoTelefone.addEventListener('input', function () {
 
 // Indicador de requisitos da senha
 campoSenha.addEventListener('input', function () {
-    const senha = campoSenha.value;
-
-    const forca = verificarForcaSenha(senha);
+    const forca = verificarForcaSenha(campoSenha.value);
 
     naoMinimo.textContent = forca.minimo;
     naoLetra.textContent = forca.letra;
@@ -78,57 +66,41 @@ campoSenha.addEventListener('input', function () {
 formCadastro.addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    // Recuperar clientes atualizados
     const clientes = carregarClientes();
 
-    // Informações do formulário
     const nome = campoNome.value.trim();
     const cpf = campoCpf.value.replace(/\D/g, '');
     const email = campoEmail.value.trim().toLowerCase();
     const telefone = campoTelefone.value.replace(/\D/g, '');
     const senha = campoSenha.value;
-    const confirmacaoSenha = campoConfirma.value;
 
-    // Validar campos
-    erroNome.textContent = validarNome(nome);
-    erroCpf.textContent = validarCpf(cpf, clientes);
-    erroEmail.textContent = validarEmail(email, clientes);
-    erroTelefone.textContent = validarTelefone(telefone);
-    erroSenha.textContent = validarSenha(senha);
-    erroConfirma.textContent = validarConfirmacaoSenha(senha, confirmacaoSenha);
+    // Validar campos (mostra os erros e foca o primeiro inválido)
+    const temErro = exibirErros([
+        [campoNome, erroNome, validarNome(nome)],
+        [campoCpf, erroCpf, validarCpf(cpf, clientes)],
+        [campoEmail, erroEmail, validarEmail(email, clientes)],
+        [campoTelefone, erroTelefone, validarTelefone(telefone)],
+        [campoSenha, erroSenha, validarSenha(senha)],
+        [campoConfirma, erroConfirma, validarConfirmacaoSenha(senha, campoConfirma.value)]
+    ]);
 
-    // Verificar se os campos são válidos
-    if (
-        erroNome.textContent || erroCpf.textContent || erroEmail.textContent || erroTelefone.textContent || erroSenha.textContent || erroConfirma.textContent) {
-        if (erroNome.textContent) campoNome.focus();
-        else if (erroCpf.textContent) campoCpf.focus();
-        else if (erroEmail.textContent) campoEmail.focus();
-        else if (erroTelefone.textContent) campoTelefone.focus();
-        else if (erroSenha.textContent) campoSenha.focus();
-        else campoConfirma.focus();
-
+    if (temErro) {
         return;
     }
 
-    // Gerar ID, salt e hash
-    const id = gerarID();
+    // Criar e salvar cliente
     const salt = gerarSalt();
-    const hash = await gerarHash(senha, salt);
 
-    // Criar cliente
-    const cliente = {
-        id: id,
+    salvarClientes({
+        id: gerarID(),
         nome: nome,
         cpf: cpf,
         email: email,
         telefone: telefone,
         perfil: 'cliente',
-        senhaHash: hash,
+        senhaHash: await gerarHash(senha, salt),
         salt: salt
-    };
-
-    // Salvar cliente
-    salvarClientes(cliente);
+    });
 
     mostrarToast(
         'Conta criada com sucesso! Redirecionando para o login.',
@@ -139,22 +111,5 @@ formCadastro.addEventListener('submit', async function (event) {
         window.location.href = 'login.html';
     }, 3000);
 
-    // Limpar formulário
     formCadastro.reset();
-
-    // Limpar mensagens
-    erroNome.textContent = '';
-    erroCpf.textContent = '';
-    erroEmail.textContent = '';
-    erroTelefone.textContent = '';
-    erroSenha.textContent = '';
-    erroConfirma.textContent = '';
-
-    naoMinimo.textContent = '';
-    naoLetra.textContent = '';
-    naoNumero.textContent = '';
-
-
 });
-
-

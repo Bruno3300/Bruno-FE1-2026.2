@@ -1,5 +1,3 @@
-
-// Funções importadas
 import {
     carregarClientes,
     atualizarCliente,
@@ -20,22 +18,16 @@ import {
     gerarHash
 } from './utils.js';
 
-import {
-    exigirLogin
-} from './sessao.js';
+import { exigirLogin } from './sessao.js';
+import { mostrarToast, abrirModal, fecharModal, exibirErros } from './ui.js';
 
-import {
-    mostrarToast,
-    abrirModal,
-    fecharModal
-} from './ui.js';
 
 // Recuperar cliente logado
 const cliente = exigirLogin();
 
 if (cliente) {
 
-    // Capturar formulário e campos
+    // Formulário e campos
     const formPerfil = document.getElementById('form-perfil');
 
     const campoId = document.getElementById('id-cliente');
@@ -53,12 +45,6 @@ if (cliente) {
     const erroSenha = document.getElementById('erro-senha');
     const erroConfirma = document.getElementById('erro-confirma');
 
-    // Botões
-    const botaoRemover = document.getElementById('botao-remover-conta');
-    const botaoSair = document.getElementById('botao-sair');
-    const botaoCancelar = document.getElementById('cancelar-remocao');
-    const botaoConfirmar = document.getElementById('confirmar-remocao');
-
 
     // Preencher campos com os dados do cliente
     campoId.value = cliente.id;
@@ -67,8 +53,6 @@ if (cliente) {
     campoEmail.value = cliente.email;
     campoTelefone.value = formatarTelefone(cliente.telefone);
 
-
-    // Aplicar máscara no telefone
     campoTelefone.addEventListener('input', function () {
         campoTelefone.value = formatarTelefone(campoTelefone.value);
     });
@@ -78,87 +62,47 @@ if (cliente) {
     formPerfil.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        // Recuperar clientes atualizados
-        const clientes = carregarClientes();
-
-        // Informações do formulário
-        const nome = campoNome.value.trim();
-        const email = campoEmail.value.trim().toLowerCase();
-        const telefone = campoTelefone.value;
-        const senha = campoSenha.value;
-        const confirmacaoSenha = campoConfirma.value;
-
-        // Excluir o próprio cliente da verificação de e-mail
-        const outrosClientes = clientes.filter(
+        // Ignorar o próprio cliente na verificação de e-mail repetido
+        const outrosClientes = carregarClientes().filter(
             c => c.id !== cliente.id
         );
 
-        // Validar campos
-        erroNome.textContent = validarNome(nome);
-        erroEmail.textContent = validarEmail(email, outrosClientes);
-        erroTelefone.textContent = validarTelefone(telefone);
+        const nome = campoNome.value.trim();
+        const email = campoEmail.value.trim().toLowerCase();
+        const telefone = campoTelefone.value.replace(/\D/g, '');
+        const senha = campoSenha.value;
+        const confirmacao = campoConfirma.value;
 
-        erroSenha.textContent = '';
-        erroConfirma.textContent = '';
+        // Senha só é validada se o cliente quiser alterá-la
+        const alterarSenha = senha !== '' || confirmacao !== '';
 
-        // Validar senha somente se quiser alterá-la
-        if (senha !== '' || confirmacaoSenha !== '') {
-            erroSenha.textContent = validarSenha(senha);
+        const temErro = exibirErros([
+            [campoNome, erroNome, validarNome(nome)],
+            [campoEmail, erroEmail, validarEmail(email, outrosClientes)],
+            [campoTelefone, erroTelefone, validarTelefone(telefone)],
+            [campoSenha, erroSenha, alterarSenha ? validarSenha(senha) : ''],
+            [campoConfirma, erroConfirma, alterarSenha ? validarConfirmacaoSenha(senha, confirmacao) : '']
+        ]);
 
-            erroConfirma.textContent =
-                validarConfirmacaoSenha(senha, confirmacaoSenha);
-        }
-
-        // Verificar erros
-        if (
-            erroNome.textContent ||
-            erroEmail.textContent ||
-            erroTelefone.textContent ||
-            erroSenha.textContent ||
-            erroConfirma.textContent
-        ) {
-            if (erroNome.textContent) campoNome.focus();
-            else if (erroEmail.textContent) campoEmail.focus();
-            else if (erroTelefone.textContent) campoTelefone.focus();
-            else if (erroSenha.textContent) campoSenha.focus();
-            else campoConfirma.focus();
-
+        if (temErro) {
             return;
         }
 
         // Criar objeto atualizado
-        const clienteAtualizado = {
-            ...cliente,
-            nome: nome,
-            email: email,
-            telefone: telefone
-        };
+        const clienteAtualizado = { ...cliente, nome, email, telefone };
 
-        // Atualizar senha se foi preenchida
         if (senha !== '') {
-            const salt = gerarSalt();
-            const hash = await gerarHash(senha, salt);
-
-            clienteAtualizado.salt = salt;
-            clienteAtualizado.senhaHash = hash;
+            clienteAtualizado.salt = gerarSalt();
+            clienteAtualizado.senhaHash = await gerarHash(senha, clienteAtualizado.salt);
         }
 
         // Verificar se houve alguma alteração
-        const houveAlteracao =
-            clienteAtualizado.nome !== cliente.nome ||
-            clienteAtualizado.email !== cliente.email ||
-            clienteAtualizado.telefone !== cliente.telefone ||
-            clienteAtualizado.senhaHash !== cliente.senhaHash;
-
-        if (!houveAlteracao) {
+        if (JSON.stringify(clienteAtualizado) === JSON.stringify(cliente)) {
             mostrarToast('Nenhuma alteração foi realizada.', 'info');
             return;
         }
 
-        // Salvar alterações
-        const atualizado = atualizarCliente(clienteAtualizado);
-
-        if (atualizado) {
+        if (atualizarCliente(clienteAtualizado)) {
             Object.assign(cliente, clienteAtualizado);
 
             campoSenha.value = '';
@@ -169,38 +113,31 @@ if (cliente) {
     });
 
 
-    // Abrir diálogo de remoção
-    botaoRemover.addEventListener('click', function () {
+    // Encerrar sessão e voltar para a página inicial
+    function sair(mensagem) {
+        removerDados('clienteLogado');
+        salvarDados('mensagemLogin', mensagem);
+
+        window.location.href = 'index.html';
+    }
+
+    // Sair da conta
+    document.getElementById('botao-sair').addEventListener('click', function () {
+        sair('logout-sucesso');
+    });
+
+    // Remover conta (com confirmação)
+    document.getElementById('botao-remover-conta').addEventListener('click', function () {
         abrirModal('dialog-remover');
     });
 
-
-    // Cancelar remoção
-    botaoCancelar.addEventListener('click', function () {
+    document.getElementById('cancelar-remocao').addEventListener('click', function () {
         fecharModal('dialog-remover');
     });
 
-
-    // Confirmar remoção
-    botaoConfirmar.addEventListener('click', function () {
-        const removido = removerCliente(cliente.id);
-
-        if (removido) {
-            removerDados('clienteLogado');
-
-            salvarDados('mensagemLogin', 'conta-removida');
-
-            window.location.href = 'index.html';
+    document.getElementById('confirmar-remocao').addEventListener('click', function () {
+        if (removerCliente(cliente.id)) {
+            sair('conta-removida');
         }
-    });
-
-
-    // Sair da conta
-    botaoSair.addEventListener('click', function () {
-        removerDados('clienteLogado');
-
-        salvarDados('mensagemLogin', 'logout-sucesso');
-
-        window.location.href = 'index.html';
     });
 }
