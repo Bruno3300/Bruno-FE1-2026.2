@@ -7,6 +7,10 @@ import {
 
 import { mostrarToast } from './ui.js';
 
+import { criarAdminPadrao } from './seed.js'
+
+await criarAdminPadrao();
+
 
 // Mensagens guardadas entre páginas: [texto, tipo]
 const mensagens = {

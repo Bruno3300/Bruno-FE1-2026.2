@@ -99,6 +99,9 @@ formLogin.addEventListener('submit', async function (event) {
     // Login realizado com sucesso
     limparTentativas();
 
+    console.log('Evento de login executado');
+    console.log('Cliente encontrado:', cliente);
+
     salvarDados('clienteLogado', cliente.id);
     salvarDados('mensagemLogin', 'login-sucesso');
 
