@@ -19,6 +19,7 @@
     <script type="module" src="js/sessao.js"></script>
     <script type="module" src="js/produtos.js"></script>
     <script type="module" src="js/carrinho.js"></script>
+    <script type="module" src="js/compras.js"></script>
 </head>
 
 <body>
@@ -146,26 +147,142 @@
 
             </section>
 
-            <button type="button" class="botao botao-vermelho" id="botao-finalizar">
-                Finalizar compra
+            <button type="button" class="botao botao-vermelho" id="botao-continuar">
+                Continuar
             </button>
 
-        </section>
+        </section> <!-- fim do #carrinho -->
 
 
-        <!--confirmação-->
+        <!-- Checkout -->
+        <section id="checkout" hidden>
+            <h2>Finalizar compra</h2>
+
+            <nav class="checkout-etapas" aria-label="Etapas da compra">
+                <span data-indicador="1">Endereço</span>
+                <span data-indicador="2">Pagamento</span>
+                <span data-indicador="3">Confirmação</span>
+            </nav>
+
+            <!-- Etapa 1: endereço -->
+            <section class="checkout-etapa" data-etapa="1">
+                <h3>Endereço de entrega</h3>
+
+                <form id="form-endereco">
+                    <div class="campo">
+                        <label for="endereco-rua">Rua</label>
+                        <input type="text" id="endereco-rua" required>
+                        <span class="erro" id="erro-endereco-rua"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="endereco-numero">Número</label>
+                        <input type="text" id="endereco-numero" required>
+                        <span class="erro" id="erro-endereco-numero"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="endereco-complemento">Complemento</label>
+                        <input type="text" id="endereco-complemento">
+                    </div>
+
+                    <div class="campo">
+                        <label for="endereco-bairro">Bairro</label>
+                        <input type="text" id="endereco-bairro" required>
+                        <span class="erro" id="erro-endereco-bairro"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="endereco-cidade">Cidade</label>
+                        <input type="text" id="endereco-cidade" required>
+                        <span class="erro" id="erro-endereco-cidade"></span>
+                    </div>
+
+                    <div class="campo">
+                        <label for="endereco-estado">Estado (UF)</label>
+                        <input type="text" id="endereco-estado" maxlength="2" required>
+                        <span class="erro" id="erro-endereco-estado"></span>
+                    </div>
+
+                    <button type="button" class="botao" id="botao-voltar-carrinho">
+                        Voltar ao carrinho
+                    </button>
+
+                    <button type="button" class="botao botao-vermelho" data-proxima="2">
+                        Continuar
+                    </button>
+                </form>
+            </section>
+
+            <!-- Etapa 2: pagamento -->
+            <section class="checkout-etapa" data-etapa="2" hidden>
+                <h3>Forma de pagamento</h3>
+
+                <form id="form-pagamento">
+                    <div class="campo">
+                        <label for="forma-pagamento">Escolha uma forma de pagamento</label>
+                        <select id="forma-pagamento" required>
+                            <option value="">Selecione</option>
+                            <option value="pix">Pix</option>
+                            <option value="cartao">Cartão de crédito</option>
+                            <option value="boleto">Boleto</option>
+                        </select>
+                        <span class="erro" id="erro-forma-pagamento"></span>
+                    </div>
+
+                    <div id="dados-cartao" hidden>
+                        <div class="campo">
+                            <label for="cartao-numero">Número do cartão</label>
+                            <input type="text" id="cartao-numero" inputmode="numeric" autocomplete="cc-number"
+                                maxlength="19">
+                            <span class="erro" id="erro-cartao-numero"></span>
+                        </div>
+
+                        <div class="campo">
+                            <label for="cartao-validade">Validade (MM/AA)</label>
+                            <input type="text" id="cartao-validade" placeholder="MM/AA" maxlength="5">
+                            <span class="erro" id="erro-cartao-validade"></span>
+                        </div>
+
+                        <div class="campo">
+                            <label for="cartao-cvv">CVV</label>
+                            <input type="password" id="cartao-cvv" inputmode="numeric" maxlength="4"
+                                autocomplete="cc-csc">
+                            <span class="erro" id="erro-cartao-cvv"></span>
+                        </div>
+                    </div>
+
+                    <div class="checkout-botoes">
+                        <button type="button" class="botao" data-voltar="1">
+                            Voltar
+                        </button>
+
+                        <button type="button" class="botao botao-vermelho" id="botao-confirmar-compra">
+                            Confirmar compra
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </section> <!-- fim do #checkout -->
+
+
+        <!-- Confirmação -->
         <section id="confirmacao" hidden>
-            <div class="confirmacao-caixa" role="dialog" aria-modal="true" aria-labelledby="confirmacao-titulo">
+            <div class="confirmacao-caixa">
                 <span class="confirmacao-icone" aria-hidden="true">✓</span>
-                <h2 id="confirmacao-titulo">Compra finalizada!</h2>
+
+                <h2>Compra finalizada!</h2>
+
                 <p>Obrigado por comprar na MangaBox. Seu pedido foi recebido com sucesso.</p>
 
                 <p class="confirmacao-numero-rotulo">Número do pedido</p>
-                <p class="confirmacao-numero">CP001</p>
+                <p class="confirmacao-numero" id="numero-pedido"></p>
 
-                <p>Enviaremos os detalhes da entrega para o seu e-mail.</p>
+                <p id="mensagem-pagamento"></p>
 
-                <a href="index.html" class="botao botao-vermelho">Voltar ao início</a>
+                <a href="perfil.html" class="botao botao-vermelho">
+                    Ver meus pedidos
+                </a>
             </div>
         </section>
 

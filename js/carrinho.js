@@ -1,4 +1,3 @@
-
 import { produtos } from '../data/produtos.js';
 import { mostrarToast } from './ui.js';
 import { carregarCarrinho, salvarCarrinho, removerCarrinho } from './storage.js';
@@ -31,6 +30,7 @@ let cepAtual = null;
 let totalProdutosAtual = 0;
 let cupomAplicado = null;
 let descontoAtual = 0;
+let freteAtual = 0;
 
 
 // Cupons
@@ -341,6 +341,53 @@ export function mesclarCarrinhoVisitante(idCliente) {
 }
 
 
+// Dados do pedido para o checkout
+export function obterResumoPedido() {
+    const itens = [];
+
+    obterCarrinhoAtual().forEach(item => {
+        const produto = buscarProduto(item.produtoId);
+
+        if (produto) {
+            itens.push({
+                produtoId: produto.id,
+                nome: produto.nome,
+                preco: produto.preco,
+                quantidade: item.quantidade
+            });
+        }
+    });
+
+    return {
+        itens,
+        cep: cepAtual,
+        totalProdutos: totalProdutosAtual,
+        frete: freteAtual,
+        desconto: descontoAtual,
+        total: Math.max(0, totalProdutosAtual + freteAtual - descontoAtual)
+    };
+}
+
+
+// Limpa carrinho, CEP e cupom depois da compra
+export function reiniciarPedido(idCliente) {
+    removerCarrinho(idCliente);
+
+    cepAtual = null;
+    cupomAplicado = null;
+
+    if (campoCep) {
+        campoCep.value = '';
+    }
+
+    if (campoCupom) {
+        campoCupom.value = '';
+    }
+
+    renderizarCarrinho();
+}
+
+
 // Botões da tabela
 if (tabelaCarrinho) {
     tabelaCarrinho.addEventListener('click', function (evento) {
@@ -431,6 +478,7 @@ function atualizarResumo(totalProdutos) {
     }
 
     descontoAtual = valorDesconto;
+    freteAtual = valorFrete;
 
     if (resultadoFrete) {
         if (cepAtual === null) {

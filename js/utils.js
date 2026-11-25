@@ -141,6 +141,75 @@ export function validarCpf(cpf, clientes) {
 }
 
 
+// Cartão de crédito
+export function formatarCartao(numero) {
+    return numero
+        .replace(/\D/g, '')
+        .slice(0, 16)
+        .replace(/(\d{4})(?=\d)/g, '$1 ');
+}
+
+export function formatarValidade(validade) {
+    return validade
+        .replace(/\D/g, '')
+        .slice(0, 4)
+        .replace(/^(\d{2})(\d)/, '$1/$2');
+}
+
+// Algoritmo de Luhn
+export function validarNumeroCartao(numero) {
+    numero = numero.replace(/\D/g, '');
+
+    if (numero.length < 13 || numero.length > 16) {
+        return 'Digite um número de cartão válido.';
+    }
+
+    let soma = 0;
+
+    for (let i = 0; i < numero.length; i++) {
+        let digito = Number(numero[numero.length - 1 - i]);
+
+        if (i % 2 === 1) {
+            digito *= 2;
+
+            if (digito > 9) {
+                digito -= 9;
+            }
+        }
+
+        soma += digito;
+    }
+
+    return soma % 10 === 0 ? '' : 'Digite um número de cartão válido.';
+}
+
+export function validarValidadeCartao(validade) {
+    const partes = /^(\d{2})\/(\d{2})$/.exec(validade);
+
+    if (!partes) {
+        return 'Informe a validade no formato MM/AA.';
+    }
+
+    const mes = Number(partes[1]);
+    const ano = 2000 + Number(partes[2]);
+    const hoje = new Date();
+
+    if (mes < 1 || mes > 12) {
+        return 'Mês de validade inválido.';
+    }
+
+    if (ano < hoje.getFullYear() || (ano === hoje.getFullYear() && mes < hoje.getMonth() + 1)) {
+        return 'Cartão vencido.';
+    }
+
+    return '';
+}
+
+export function validarCvv(cvv) {
+    return /^\d{3,4}$/.test(cvv) ? '' : 'Digite um CVV válido.';
+}
+
+
 // Segurança
 export function gerarID() {
     const contador = Number(lerDados('contadorClientes', 0)) + 1;

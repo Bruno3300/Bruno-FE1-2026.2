@@ -1,4 +1,4 @@
-// Dados genéricos
+
 export function lerDados(chave, valorPadrao = null) {
     const dados = localStorage.getItem(chave);
 
@@ -64,7 +64,7 @@ export function removerCliente(id) {
 }
 
 
-// Carrinhos (um único objeto: { visitante: [...], C001: [...], ... })
+// Carrinhos
 export function carregarCarrinho(id = 'visitante') {
     return lerDados('carrinhos', {})[id] || [];
 }
@@ -83,4 +83,38 @@ export function removerCarrinho(id = 'visitante') {
     delete carrinhos[id];
 
     salvarDados('carrinhos', carrinhos);
+}
+
+
+// Pedidos
+export function carregarPedidos() {
+    return lerDados('pedidos', []);
+}
+
+export function gerarIdPedido() {
+    const pedidos = carregarPedidos();
+
+    let maiorNumero = 0;
+
+    pedidos.forEach(pedido => {
+        const numero = Number(pedido.id.replace('CP', ''));
+
+        if (pedido.id.startsWith('CP') && numero > maiorNumero) {
+            maiorNumero = numero;
+        }
+    });
+
+    return 'CP' + String(maiorNumero + 1).padStart(3, '0');
+}
+
+export function salvarPedido(pedido) {
+    const pedidos = carregarPedidos();
+
+    pedido.id = gerarIdPedido();
+
+    pedidos.push(pedido);
+
+    salvarDados('pedidos', pedidos);
+
+    return pedido;
 }

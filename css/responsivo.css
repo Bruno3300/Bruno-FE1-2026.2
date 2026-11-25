@@ -254,3 +254,30 @@ textarea {
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 600px) {
+    #checkout {
+        margin: 2rem 1rem;
+        padding: 1.25rem;
+    }
+
+    .checkout-etapas {
+        flex-direction: column;
+    }
+
+    .checkout-etapa form,
+    #checkout #dados-cartao {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .checkout-etapas {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .checkout-botoes {
+        flex-wrap: wrap;
+    }
+}
