@@ -51,7 +51,7 @@ const cupons = {
     FRETEGRATIS: {
         tipo: 'frete',
         valor: 0,
-        minimo: 80,
+        minimo: 0,
         validade: '2027-12-31'
     },
 
